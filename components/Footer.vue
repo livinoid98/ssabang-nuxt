@@ -20,7 +20,7 @@
             </ul>
             <div class="call">
                 <div class="call-icon-wrap">
-                    <img src="/img/call-icon.png" alt="" />
+                    <img src="@/assets/img/call-icon.png" alt="" />
                 </div>
                 <span class="phone-num">3429-5100</span>
                 <p>
@@ -46,3 +46,7 @@
         </div>
     </footer>
 </template>
+
+<style>
+    
+</style>

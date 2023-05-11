@@ -13,8 +13,9 @@ module.exports = {
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
     ],
     css: [
-      '~/assets/styles/reset.css',
-      '~/assets/styles/layout.scss',
+      '@/assets/styles/reset.css',
+      {src: '@/assets/styles/layout.scss', lang: 'scss'},
+      {src: '@/assets/styles/function.scss', lang: 'scss'},
     ]
   },
   /*
