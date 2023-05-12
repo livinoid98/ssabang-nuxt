@@ -36,7 +36,30 @@
 </template>
 
 <script>
+import axios from "axios";
 
+export default {
+    name: "login",
+    components:{},
+    data() {
+        return {
+            articles: [],
+        };
+    },
+    async fetch(){
+        const response = await axios({
+            method: 'post',
+            url: 'http://127.0.0.1:8080/api/user/login',
+            data:{
+                user_id: "ssafy",
+                user_pw: "1234",
+            }
+        });
+        if(response.status === 200){
+            
+        }
+    }
+}
 </script>
 
 <style lang="scss">
