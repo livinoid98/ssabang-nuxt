@@ -8,7 +8,7 @@
 			</div>
 		</div>
 		<div class="location-graph">
-			<p>공지사항 > 공지사항</p>
+			<p>공지사항 &gt; 공지사항</p>
 		</div>
 		<div class="article-contents">
 			<h3>공지사항</h3>
@@ -39,23 +39,40 @@
 				</thead>
 				<tbody>
 					
-					<tr>
-						<td><a href="/detail"></a></td>
-						<td><a href="/detail"></a></td>
-						<td><a href="/detail">관리자</a></td>
-						<td><a href="/detail"></a></td>
+					<tr v-for="article in articles" :key="article.article_no" :article="article">
+						<td>{{ article.articleNo }}</td>
+						<td>{{ article.title }}</td>
+						<td>관리자</td>
+						<td>{{ article.showCnt }}</td>
 					</tr>
 
 				</tbody>
 			</table>
 			<div class="button-wrap">
-				<a href="/create"><button>글 쓰기</button></a>
+				<a href="/notice/create"><button>글 쓰기</button></a>
 			</div>
 		</div>
     </div>
 </template>
 
 <script>
+import axios from 'axios';
+
+export default {
+    name: "notice",
+    components:{},
+    data() {
+        return {
+            articles: [],
+        };
+    },
+    async fetch(){
+        const response = await axios.get("http://localhost:8080/api/notice/list/1");
+        this.articles = response.data;
+        console.log(response.data);
+    }
+}
+
 
 </script>
 

@@ -18,6 +18,12 @@ module.exports = {
       {src: '@/assets/styles/function.scss', lang: 'scss'},
     ]
   },
+  modules:["@nuxtjs/axios"],
+  axios:{
+    host: "http://127.0.0.1",
+    port: "8080",
+    prefix: "/",
+  },
   /*
   ** Customize the progress bar color
   */

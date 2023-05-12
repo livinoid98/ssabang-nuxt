@@ -35,13 +35,41 @@
 							<td>이름</td>
 							<td><input type="text" name="name" required/></td>
 						</tr>
+                    </table>
+
+                    <div class="sign_up_title">
+                        <h4>선택 정보</h4>
+                        <p>선택정보를 입력하시면 3개월 안에 사용하실 수 있는 쿠폰을 드립니다.</p>
+                    </div>
+
+                    <table>
 						<tr>
 							<td>휴대전화</td>
-							<td><input type="tel" name="phone" required/></td>
+							<td>
+                                <input type="tel" name="phone" required/>
+                            </td>
 						</tr>
 						<tr>
 							<td>이메일</td>
 							<td><input type="email" name="email" required/></td>
+						</tr>
+                        <tr>
+							<td>주소</td>
+							<td><input type="text" name="address" required/></td>
+						</tr>
+                        <tr>
+							<td>성별</td>
+							<td>
+                                <select>
+                                    <option value="">선택안함</option>
+                                    <option value="">남</option>
+                                    <option value="">여</option>
+                                </select>
+                            </td>
+						</tr>
+                        <tr>
+							<td>나이</td>
+							<td><input type="number" name="age" required/></td>
 						</tr>
 					</table>
 					<h4>개인정보 수집 및 이용 동의</h4>
@@ -93,6 +121,21 @@
 </template>
 
 <script>
+import axios from "axios";
+
+export default {
+    name: "signup",
+    components:{},
+    data() {
+        return {
+            articles: [],
+        };
+    },
+    async fetch(){
+        const response = await axios.get("http://localhost:8080/api/notice/list/1");
+        this.articles = response.data;
+    }
+}
 
 </script>
 
@@ -240,6 +283,11 @@
                         input{
                             width:260px;
                             height:20px;
+                            border:1px solid #d9d9d9;
+                        }
+                        select{
+                            width:266px;
+                            height:26px;
                             border:1px solid #d9d9d9;
                         }
                     }
