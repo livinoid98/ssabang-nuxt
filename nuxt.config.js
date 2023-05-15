@@ -16,6 +16,13 @@ module.exports = {
       '@/assets/styles/reset.css',
       {src: '@/assets/styles/layout.scss', lang: 'scss'},
       {src: '@/assets/styles/function.scss', lang: 'scss'},
+    ],
+    script: [
+      {
+        src: "https://www.googletagmanager.com/gtag/js?id=G-0QMF1DRQ5M",
+        async: true,
+      },
+      {src: "/js/analytics.js"},
     ]
   },
   modules:["@nuxtjs/axios"],
