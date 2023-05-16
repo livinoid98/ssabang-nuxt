@@ -16,17 +16,17 @@
 			<div class="flex-wrap">
 				<div class="article-left">
 					<div class="create-img-wrap">
-						<img src="/img/create_img.jpg" alt=""/>
+						<img src="@/assets/img/create_img.jpg" alt=""/>
 						
 					</div>
 				</div>
 				<div class="article-right">
-					<form action="/create" method="post">
-						<input type="text" name="name" placeholder="작성자"/>
-						<input type="text" name="title" placeholder="제목"/>
-						<input type="text" name="content" placeholder="내용"/>
+					<form>
+						<input type="text" name="name" placeholder="작성자" v-model="userId" />
+						<input type="text" name="title" placeholder="제목" v-model="title" />
+						<input type="text" name="content" placeholder="내용" v-model="content" />
 						<div class="button-wrap">
-							<button>작성하기</button>
+							<button @click="updateNotice">작성하기</button>
 							<button><a href="/notice">목록보기</a></button>
 						</div>
 					</form>
@@ -37,7 +37,39 @@
 </template>
 
 <script>
+  import http from "@/assets/api/http.js";
 
+  export default {
+    name: "update",
+    components:{},
+    data() {
+        return {
+            userId: "",
+            title : "",
+            content: "",
+        };
+    },
+    methods:{
+        async updateNotice(e){
+            e.preventDefault();
+            let response = await http.put('/api/notice/update', {
+                articleNo : Number(this.$route.params.no),
+                userId : this.userId,
+                title : this.title,
+                content: this.content,
+            })
+            if(response.data === 1){
+                this.$router.push('/notice');
+            }
+        }
+    },
+    async fetch(){
+        let response = await http.get(`/api/notice/detail/${this.$route.params.no}`);
+        this.userId = response.data.userId;
+        this.title = response.data.title;
+        this.content = response.data.content;
+    }
+}
 </script>
 
 <style lang="scss">

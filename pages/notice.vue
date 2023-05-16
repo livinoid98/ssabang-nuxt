@@ -39,24 +39,24 @@
 				</thead>
 				<tbody>
 					
-					<tr v-for="article in articles" :key="article.article_no" :article="article">
+					<tr v-for="article in articles" :key="article.article_no" :article="article" @click="showDetail(`${article.articleNo}`)">
 						<td>{{ article.articleNo }}</td>
 						<td>{{ article.title }}</td>
-						<td>관리자</td>
-						<td>{{ article.showCnt }}</td>
+						<td>{{ article.userId }}</td>
+						<td>{{ article.hitCnt }}</td>
 					</tr>
 
 				</tbody>
 			</table>
 			<div class="button-wrap">
-				<a href="/notice/create"><button>글 쓰기</button></a>
+				<NuxtLink to="/create"><button>글 쓰기</button></NuxtLink>
 			</div>
 		</div>
     </div>
 </template>
 
 <script>
-import axios from 'axios';
+import http from '@/assets/api/http.js';
 
 export default {
     name: "notice",
@@ -66,10 +66,14 @@ export default {
             articles: [],
         };
     },
+    methods:{
+        async showDetail(no){
+            this.$router.push(`/detail/${no}`);
+        }
+    },
     async fetch(){
-        const response = await axios.get("http://localhost:8080/api/notice/list/1");
+        const response = await http.get("/api/notice/list/1");
         this.articles = response.data;
-        console.log(response.data);
     }
 }
 
@@ -165,6 +169,7 @@ export default {
             @include font(12px, 400, #9B9B9B);
             tr{
                 border-bottom:1px solid #E7E7E7;
+                cursor:pointer;
                 &:last-child{
                     border-bottom:1px solid #8A8A8A;
                 }

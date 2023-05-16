@@ -16,9 +16,9 @@
                 <div class="login">
                     <form action="/login" method="POST">
                         <h4>로그인</h4>
-                        <input type="text" name="id" placeholder="ID" required />
-                        <input type="password" name="password" placeholder="PW" />
-                        <input type="submit" value="LOGIN" />
+                        <input type="text" name="id" placeholder="ID" v-model="id" required/>
+                        <input type="password" name="password" v-model="password" placeholder="PW" />
+                        <input type="submit" value="LOGIN" @click="login"/>
                     </form>
                     <ul class="clearfix">
                         <li>아이디 찾기</li>
@@ -28,7 +28,7 @@
                 <div class="sign_up_inlogin">
                     <h4>회원가입</h4>
                     <p>싸방 회원에게만 제공되는 다양한 혜택을 누려보세요.</p>
-                    <Link href="/signup"><a><button>JOIN US</button></a></Link>
+                    <NuxtLink to="/signup"><button>JOIN US</button></NuxtLink>
                 </div>
             </div>
         </div>
@@ -36,29 +36,40 @@
 </template>
 
 <script>
-import axios from "axios";
+import http from "@/assets/api/http.js"
 
 export default {
     name: "login",
     components:{},
     data() {
         return {
+            id : "",
+            password: "",
             articles: [],
         };
     },
-    async fetch(){
-        const response = await axios({
-            method: 'post',
-            url: 'http://127.0.0.1:8080/api/user/login',
-            data:{
-                user_id: "ssafy",
-                user_pw: "1234",
-            }
-        });
-        if(response.status === 200){
-            
-        }
-    }
+    methods:{
+        async login(e){
+            e.preventDefault();
+            await http.post('/api/user/login', {
+                userId: this.id,
+                userPw: this.password,
+            }).then((data) => {
+                if(data.data.user === null){
+                    alert("아이디 및 비밀번호를 다시 확인해주세요.");
+                    this.$router.push('/login');
+                }else{
+                    try{
+                        this.$router.push('/');
+                    }catch(err){
+                        this.$router.push('/login');
+                    }
+
+                }
+                
+            })
+        },
+    },
 }
 </script>
 

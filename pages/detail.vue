@@ -13,18 +13,50 @@
             </div>
             <div class="notice_body">
                 <span>공지사항</span>
-                <h3></h3>
-                <span></span>
-                <p></p>
-                <button><a href="#">수정</a></button>
-                <button><a href="/delete">삭제</a></button>
+                <h3>{{title}}</h3>
+                <span>{{registTime}}</span>
+                <p>{{content}}</p>
+                <button @click="updateNotice(`${articleNo}`)">수정</button>
+                <button @click="deleteNotice(`${articleNo}`)" >삭제</button>
             </div>
         </div>
     </div>
 </template>
 
 <script>
+import http from '@/assets/api/http.js';
 
+export default {
+    name: "notice",
+    components:{},
+    data() {
+        return {
+            articleNo: 0,
+            title: "",
+            content: "",
+            registTime: "",
+        };
+    },
+    methods:{
+        async deleteNotice(articleNo){
+            let response = await http.delete(`/api/notice/delete/${articleNo}`);
+            if(response.data == 1){
+                this.$router.push('/notice');
+            }
+        },
+        updateNotice(articleNo){
+            console.log(articleNo);
+            this.$router.push(`/update/${articleNo}`);
+        }
+    },
+    async fetch(){
+        let response = await http.get('/api/notice/detail/' + this.$route.params.no);
+        this.articleNo = response.data.articleNo;
+        this.title = response.data.title;
+        this.content = response.data.content;
+        this.registTime = response.data.registTime;
+    }
+}
 </script>
 
 <style lang="scss">
@@ -128,6 +160,8 @@
         font-size: 14px;
         font-weight:500;
         color: #48453b;
+        cursor:pointer;
+        font-family: 'Noto Sans KR', sans-serif !important;
     }
     .notice_body button:nth-child(5){
         margin-left:860px;
