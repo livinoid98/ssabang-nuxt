@@ -7,52 +7,51 @@
 			</form>
 			<form action="/area" method="GET">
 				<div class="separator">
-					<select class="sido">
+					<select class="sido" @change="selectSi">
 						<option>광역시</option>
-                        <option v-for="si in si" :key="si" :si="si">{{ si.sidoName }}</option>
+                        <option v-for="si in si" :key="si" :si="si" :value="si.dongCode">{{ si.sidoName }}</option>
 					</select>
-					<select class="gugun">
-						<option>구/군</option>
+					<select class="gugun" @change="selectGugun">
+                        <option>구/군</option>
+						<option v-for="gugun in gugun" :key="gugun" :gugun="gugun" :value="gugun.dongCode">{{ gugun.gugunName }}</option>
 					</select>
 					<select class="dong" name="dong">
 						<option>동</option>
+                        <option v-for="dong in dong" :key="dong" :dong="dong" :value="dong.dongCode">{{ dong.dongName }}</option>
 					</select>
-
-					<select class="year">
-						<option>연도</option>
-                        <option>2015년</option>
-                        <option>2016년</option>
-                        <option>2017년</option>
-                        <option>2018년</option>
-                        <option>2019년</option>
-                        <option>2020년</option>
-                        <option>2021년</option>
-                        <option>2022년</option>
-					</select>
-					<select class="month">
-						<option>월</option>
-                        <option>1월</option>
-                        <option>2월</option>
-                        <option>3월</option>
-                        <option>4월</option>
-                        <option>5월</option>
-                        <option>6월</option>
-                        <option>7월</option>
-                        <option>8월</option>
-                        <option>9월</option>
-                        <option>10월</option>
-                        <option>11월</option>
-                        <option>12월</option>
-					</select>
-
-					<input type="submit" class="find" value="검색">
+					<input type="submit" class="find" value="검색" @click.prevent="findApart">
 				</div>
 			</form>
 		</div>
 		<div class="main">
 			<div class="map-left">
 				<ul>
-
+                    <select class="year">
+						<option>연도</option>
+                        <option value="2015">2015년</option>
+                        <option value="2016">2016년</option>
+                        <option value="2017">2017년</option>
+                        <option value="2018">2018년</option>
+                        <option value="2019">2019년</option>
+                        <option value="2020">2020년</option>
+                        <option value="2021">2021년</option>
+                        <option value="2022">2022년</option>
+					</select>
+					<select class="month">
+						<option>월</option>
+                        <option value="01">1월</option>
+                        <option value="02">2월</option>
+                        <option value="03">3월</option>
+                        <option value="04">4월</option>
+                        <option value="05">5월</option>
+                        <option value="06">6월</option>
+                        <option value="07">7월</option>
+                        <option value="08">8월</option>
+                        <option value="09">9월</option>
+                        <option value="10">10월</option>
+                        <option value="11">11월</option>
+                        <option value="12">12월</option>
+					</select>
 				</ul>
 			</div>
 			<div class="main-right"></div>
@@ -70,6 +69,8 @@ export default {
         return {
             mapComp: null,
             si:[],
+            gugun: [],
+            dong:[],
         };
     },
     mounted(){
@@ -89,6 +90,25 @@ export default {
             let map = new kakao.maps.Map(container, options);
             this.mapComp = map;
         },
+        async selectSi(){
+            const sido = document.querySelector(".sido");
+            let value = sido.options[sido.selectedIndex].value;
+            let responseData = value.slice(0,2);
+            let response = await http.get(`/api/map/list/juso/gugun/${responseData}`);
+            this.gugun = response.data;
+        },
+        async selectGugun(){
+            const gugun = document.querySelector(".gugun");
+            let value = gugun.options[gugun.selectedIndex].value;
+            let responseData = value.slice(0,5);
+            let response = await http.get(`/api/map/list/juso/dong/${responseData}`);
+            this.dong = response.data;
+        },
+        async findApart(){
+            const dong = document.querySelector(".dong");
+            let value = dong.options[dong.selectedIndex].value;
+            
+        }
         
     },
 }
