@@ -58,7 +58,7 @@
                 title : this.title,
                 content: this.content,
             })
-            if(response.data === 1){
+            if(response.data.update === true){
                 this.$router.push('/notice');
             }
         }

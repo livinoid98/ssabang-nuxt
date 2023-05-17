@@ -23,9 +23,17 @@ module.exports = {
         async: true,
       },
       {src: "/js/analytics.js"},
+      {
+        src: "//dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=6452f1ea135bf01fcf76db4e5eb67011",
+      },
     ]
   },
   modules:["@nuxtjs/axios"],
+  plugins: [
+    {
+      src: '~plugins/persistedState.js',
+    }
+  ],
   axios:{
     host: "http://127.0.0.1",
     port: "8080",

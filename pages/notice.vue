@@ -49,7 +49,7 @@
 				</tbody>
 			</table>
 			<div class="button-wrap">
-				<NuxtLink to="/create"><button>글 쓰기</button></NuxtLink>
+				<nuxt-link to="/create" v-if="user.userId === 'ssafy'"><button>글 쓰기</button></nuxt-link>
 			</div>
 		</div>
     </div>
@@ -57,6 +57,7 @@
 
 <script>
 import http from '@/assets/api/http.js';
+import {mapState} from 'vuex';
 
 export default {
     name: "notice",
@@ -66,6 +67,9 @@ export default {
             articles: [],
         };
     },
+    computed: {
+		...mapState(["isLogged","user"]),
+	},
     methods:{
         async showDetail(no){
             this.$router.push(`/detail/${no}`);

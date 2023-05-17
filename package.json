@@ -14,9 +14,12 @@
   },
   "dependencies": {
     "@nuxtjs/axios": "^5.13.6",
+    "cookie": "^0.5.0",
+    "js-cookie": "^3.0.5",
     "node-fetch-native": "^1.1.1",
     "nuxt": "^2.0.0",
-    "nuxt-d3": "^0.0.0-alpha-005"
+    "nuxt-d3": "^0.0.0-alpha-005",
+    "vuex-persistedstate": "^4.1.0"
   },
   "devDependencies": {
     "babel-eslint": "^10.0.1",

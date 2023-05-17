@@ -9,6 +9,7 @@
 				<div class="separator">
 					<select class="sido">
 						<option>광역시</option>
+                        <option v-for="si in si" :key="si" :si="si">{{ si.sidoName }}</option>
 					</select>
 					<select class="gugun">
 						<option>구/군</option>
@@ -17,11 +18,31 @@
 						<option>동</option>
 					</select>
 
-					<select class="year" style="display:none;">
+					<select class="year">
 						<option>연도</option>
+                        <option>2015년</option>
+                        <option>2016년</option>
+                        <option>2017년</option>
+                        <option>2018년</option>
+                        <option>2019년</option>
+                        <option>2020년</option>
+                        <option>2021년</option>
+                        <option>2022년</option>
 					</select>
-					<select class="month" style="display:none;">
+					<select class="month">
 						<option>월</option>
+                        <option>1월</option>
+                        <option>2월</option>
+                        <option>3월</option>
+                        <option>4월</option>
+                        <option>5월</option>
+                        <option>6월</option>
+                        <option>7월</option>
+                        <option>8월</option>
+                        <option>9월</option>
+                        <option>10월</option>
+                        <option>11월</option>
+                        <option>12월</option>
 					</select>
 
 					<input type="submit" class="find" value="검색">
@@ -40,7 +61,37 @@
 </template>
 
 <script>
+import http from "@/assets/api/http.js";
 
+export default {
+    name: "mainMap",
+    components:{},
+    data() {
+        return {
+            mapComp: null,
+            si:[],
+        };
+    },
+    mounted(){
+        kakao.maps.load(this.initMap);
+    },
+    async fetch(){
+        let response = await http.get('/api/map/list/juso');
+        this.si = response.data;
+    },
+    methods:{
+        initMap(){
+            const container = document.querySelector(".main-right");
+            const options = {
+                center: new kakao.maps.LatLng(33.450701, 126.570667),
+                level: 5,
+            };
+            let map = new kakao.maps.Map(container, options);
+            this.mapComp = map;
+        },
+        
+    },
+}
 </script>
 
 

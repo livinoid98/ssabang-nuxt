@@ -28,7 +28,7 @@
                 <div class="sign_up_inlogin">
                     <h4>회원가입</h4>
                     <p>싸방 회원에게만 제공되는 다양한 혜택을 누려보세요.</p>
-                    <NuxtLink to="/signup"><button>JOIN US</button></NuxtLink>
+                    <nuxt-link to="/signup"><button>JOIN US</button></nuxt-link>
                 </div>
             </div>
         </div>
@@ -36,7 +36,7 @@
 </template>
 
 <script>
-import http from "@/assets/api/http.js"
+import http from "@/assets/api/http.js";
 
 export default {
     name: "login",
@@ -45,7 +45,6 @@ export default {
         return {
             id : "",
             password: "",
-            articles: [],
         };
     },
     methods:{
@@ -60,11 +59,11 @@ export default {
                     this.$router.push('/login');
                 }else{
                     try{
+                        this.$store.commit('saveLogin', data.data.user);
                         this.$router.push('/');
                     }catch(err){
                         this.$router.push('/login');
                     }
-
                 }
                 
             })

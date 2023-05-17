@@ -38,6 +38,7 @@
 
 <script>
   import http from "@/assets/api/http.js";
+  import {mapState} from 'vuex';
 
   export default {
     name: "create",
@@ -49,6 +50,9 @@
             content: "",
         };
     },
+    computed: {
+      ...mapState(["isLogged","user"]),
+    },
     methods:{
       async createNotice(e){
         e.preventDefault();
@@ -58,7 +62,7 @@
           content: this.content,
         });
 
-        if(response.data === 1){
+        if(response.data.insert === true){
           this.$router.push('/notice');
         }
       }

@@ -1,29 +1,33 @@
 @import "./function.scss";
 
-header{
-    @include setSize(1200px, 92px);
-    margin:0 auto;
-    @include flex(flex, null, center);
+.header-wrap{
+    width:100%;
+    height:92px;
     border-bottom:2px solid #E7E7E7;
-    .logo{
-        width:120px;
-        svg{
-            width:100%;
-        }
-    }
-    nav{
-        @include setSize(100%, 92px);
-        @include flex(flex, space-between, center);
-        margin-left:22px;
-        ul{
-            @include flex(flex, null, center);
-            li{
-                margin-left:28px;
-                @include font(16px, 400, #838383);
+    header{
+        @include setSize(1200px, 92px);
+        margin:0 auto;
+        @include flex(flex, null, center);
+        .logo{
+            width:120px;
+            svg{
+                width:100%;
             }
         }
-        .nav-right{
-            margin-right: 28px;
+        nav{
+            @include setSize(100%, 92px);
+            @include flex(flex, space-between, center);
+            margin-left:22px;
+            ul{
+                @include flex(flex, null, center);
+                li{
+                    margin-left:28px;
+                    @include font(16px, 400, #838383);
+                }
+            }
+            .nav-right{
+                margin-right: 28px;
+            }
         }
     }
 }

@@ -40,12 +40,11 @@ export default {
     methods:{
         async deleteNotice(articleNo){
             let response = await http.delete(`/api/notice/delete/${articleNo}`);
-            if(response.data == 1){
+            if(response.data.delete === true){
                 this.$router.push('/notice');
             }
         },
         updateNotice(articleNo){
-            console.log(articleNo);
             this.$router.push(`/update/${articleNo}`);
         }
     },

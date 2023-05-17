@@ -1,8 +1,9 @@
 <template>
+<div class="header-wrap">
     <header>
 			<div class="logo">
 				<h1>
-					<a href="/">
+					<nuxt-link to="/">
 						<svg
 							width="645"
 							height="282"
@@ -36,44 +37,63 @@
 								/>
 							</defs>
 						</svg>
-					</a>
+					</nuxt-link>
 				</h1>
 			</div>
 			<nav>
 				<ul class="nav-left">
 					<li>
-						<h2><a href="/map">매물보기</a></h2>
+						<h2><nuxt-link to="map">매물보기</nuxt-link></h2>
 					</li>
 					<li>
-						<h2><a href="/list">매물정보</a></h2>
+						<h2><nuxt-link to="list">매물정보</nuxt-link></h2>
 					</li>
 					<li>
-						<h2><a href="/news">부동산이슈</a></h2>
+						<h2><nuxt-link to="news">부동산이슈</nuxt-link></h2>
 					</li>
 					<li>
-						<h2><a href="/notice">공지사항</a></h2>
+						<h2><nuxt-link to="notice">공지사항</nuxt-link></h2>
 					</li>
 				</ul>
 				<ul class="nav-right">
-					<li class="login">
-						<h2><a href="/login">로그인</a></h2>
+					<li class="login" v-if="!isLogged">
+						<h2><nuxt-link to="login">로그인</nuxt-link></h2>
 					</li>
-					<li class="signup">
+					<li class="signup" v-if="!isLogged">
 						<h2><a href="/signup">회원가입</a></h2>
 					</li>
-					<li>
-						<h2><a href="#">님 안녕하세요</a></h2>
+					<li v-if="isLogged">
+						<h2><span>{{user.name}}({{user.userId}})</span>님 안녕하세요</h2>
 					</li>
-					<li class="logout">
+					<li class="logout" v-if="isLogged">
 						<h2><a href="/logout">로그아웃</a></h2>
 					</li>
 				</ul>
 			</nav>
-		</header>
+	</header>
+	</div>
 </template>
 
 <script>
+import {mapMutations, mapState} from 'vuex';
 
+export default {
+    name: "mainHeader",
+    components:{},
+    data() {
+        return {
+			
+        };
+    },
+	computed: {
+		...mapState(["isLogged","user"]),
+	},
+	methods:{
+		...mapMutations([
+			'saveLogin',
+		]),
+	},
+}
 </script>
 
 <style>

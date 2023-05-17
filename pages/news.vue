@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class="main-banner">
+      <div class="main-banner">
 				<div class="opacity-layer"></div>
 				<div class="main-title">
 					<h3>뉴스/소개</h3>
@@ -10,43 +10,63 @@
 			<div class="location-graph">
 				<p>공지사항 > 뉴스/소개</p>
 			</div>
-		<div class="bg">
-			<div class="article-contents">
-				<div class="news-content">
-					<div class="news-title">
-						<h4>
-							THE<br/>
-							ESTATE<br/>
-							NEWS
-						</h4>
-						<p>오늘의 주요 부동산<br/>
-						<b class="bold">뉴스를 한 곳에서!</b></p>
-						<p>#주택공급 #주택금융 #주택정책 #주택청약
-							#정비사업 #재개발 #공공재개발 #임대사업자
-							#주담대 #양도세 #종부세 #대출
-							#개발호재 #도시재생 #신도시 #재건축
-							#임대주택 #도시계획 #가격동향 #통계</p>
-						<button><a href="https://land.naver.com/news/headline.naver">부동산 정보 더 알아보기</a></button>
-					</div>
-					<div class="news-main">
-						<ul>
-							<li>
-								<a href="https://land.naver.com/news/headline.naver">
-									<h4></h4>
-									<p></p>
-									<span>+ 더 알아보기</span>
-								</a>
-							</li>
-						</ul>
-					</div>
-				</div>
-			</div>
-		</div>
+      <div class="bg">
+        <div class="article-contents">
+          <div class="news-content">
+            <div class="news-title">
+              <h4>
+                THE<br/>
+                ESTATE<br/>
+                NEWS
+              </h4>
+              <p>오늘의 주요 부동산<br/>
+              <b class="bold">뉴스를 한 곳에서!</b></p>
+              <p>#주택공급 #주택금융 #주택정책 #주택청약
+                #정비사업 #재개발 #공공재개발 #임대사업자
+                #주담대 #양도세 #종부세 #대출
+                #개발호재 #도시재생 #신도시 #재건축
+                #임대주택 #도시계획 #가격동향 #통계</p>
+              <button><a href="https://land.naver.com/news/headline.naver">부동산 정보 더 알아보기</a></button>
+            </div>
+            <div class="news-main">
+              <ul>
+                <li v-for="article in news" :key="article">
+                  <a @click.prevent="linkNews(`${article.link}`)">
+                    <h4>{{article.title}}</h4>
+                    <p>{{article.content}}</p>
+                    <span>+ 더 알아보기</span>
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
 </template>
 
 <script>
+import http from "@/assets/api/http.js";
 
+export default {
+    name: "news",
+    components:{},
+    data() {
+        return {
+            news: [],
+        };
+    },
+    methods:{
+      linkNews(link){
+        window.location.href = link;
+      }
+    },
+    async fetch(){
+        const response = await http.get("/api/news");
+        console.log(response.data);
+        this.news = response.data;
+    }
+}
 </script>
 
 <style lang="scss">
