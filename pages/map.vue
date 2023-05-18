@@ -1,31 +1,25 @@
 <template>
     <div>
         <div class="map-title">
-			<form action="/apart" method="POST">
+			<form>
 				<input type="text" name="apartName" placeholder="아파트 이름" />
-				<input type="submit" value="검색"/>
+				<input type="submit" value="검색" @click.prevent="searchApt" />
 			</form>
 			<form action="/area" method="GET">
 				<div class="separator">
 					<select class="sido" @change="selectSi">
 						<option>광역시</option>
-                        <option v-for="si in si" :key="si" :si="si" :value="si.dongCode">{{ si.sidoName }}</option>
+                        <option v-for="(si,index) in si" :key="index" :si="si" :value="si.dongCode">{{ si.sidoName }}</option>
 					</select>
 					<select class="gugun" @change="selectGugun">
                         <option>구/군</option>
-						<option v-for="gugun in gugun" :key="gugun" :gugun="gugun" :value="gugun.dongCode">{{ gugun.gugunName }}</option>
+						<option v-for="(gugun,index) in gugun" :key="index" :gugun="gugun" :value="gugun.dongCode">{{ gugun.gugunName }}</option>
 					</select>
 					<select class="dong" name="dong">
 						<option>동</option>
-                        <option v-for="dong in dong" :key="dong" :dong="dong" :value="dong.dongCode">{{ dong.dongName }}</option>
+                        <option v-for="(dong, index) in dong" :key="index" :dong="dong" :value="dong.dongCode">{{ dong.dongName }}</option>
 					</select>
-					<input type="submit" class="find" value="검색" @click.prevent="findApart">
-				</div>
-			</form>
-		</div>
-		<div class="main">
-			<div class="map-left">
-				<ul>
+
                     <select class="year">
 						<option>연도</option>
                         <option value="2015">2015년</option>
@@ -52,6 +46,30 @@
                         <option value="11">11월</option>
                         <option value="12">12월</option>
 					</select>
+
+					<input type="submit" class="find" value="검색" @click.prevent="findApart">
+				</div>
+			</form>
+		</div>
+		<div class="main">
+			<div class="map-left">
+				<ul>
+                    <li v-for="(apt, index) in apt" :key="index" :apt="apt" @click="aptDetail(`${apt.lng}`, `${apt.lat}`, `${apt.apartmentName}`, `${apt.dong}`, `${apt.roadName}`, `${apt.floor}`, `${apt.area}`, `${apt.buildYear}`)">
+                        <div class="flex-wrap">
+                            <div class="img-wrap">
+                                <img src="@/assets/img/room2.png" alt=""/>
+                            </div>
+                            <div class="text-wrap">
+                                <span>중공년도: {{apt.buildYear}}년</span>
+                                <h4>{{apt.apartmentName}}</h4>
+                                <span>{{apt.dong}} {{apt.roadName}} {{apt.floor}}층</span>
+                                <p>
+                                    면적: {{apt.area}}㎡ ({{Math.floor(apt.area/3.3)}}평)<br/>
+
+                                </p>
+                            </div>
+                        </div>
+                    </li>
 				</ul>
 			</div>
 			<div class="main-right"></div>
@@ -71,6 +89,7 @@ export default {
             si:[],
             gugun: [],
             dong:[],
+            apt:[],
         };
     },
     mounted(){
@@ -106,10 +125,77 @@ export default {
         },
         async findApart(){
             const dong = document.querySelector(".dong");
-            let value = dong.options[dong.selectedIndex].value;
+            let dongCode = dong.options[dong.selectedIndex].value;
+            const year = document.querySelector(".year");
+            let yearValue = year.options[year.selectedIndex].value;
+            const month = document.querySelector(".month");
+            let monthValue = month.options[month.selectedIndex].value;
+
+            let response = await http.get(`/api/map/list/${dongCode}/${yearValue}/${monthValue}`);
+            this.apt = response.data;
+        },
+        async searchApt(){
+            let apartmentName = document.querySelector("input[name='apartName']").value;
+            let response = await http.get(`/api/map/list/searchbyname/${apartmentName}`);
+            this.apt = response.data;
+        },
+        aptDetail(lng, lat, aptName, aptDong, aptRoadName, aptFloor, aptArea, aptBuildYear){
+            let mapContainer = document.querySelector('.main-right'), // 지도를 표시할 div 
+                mapOption = { 
+                    center: new kakao.maps.LatLng(`${lat}`, `${lng}`), // 지도의 중심좌표
+                    level: 3 // 지도의 확대 레벨
+                };
+
+            let map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
+
+            // 마커가 표시될 위치입니다 
+            let markerPosition  = new kakao.maps.LatLng(`${lat}`, `${lng}`); 
+
+            // 마커를 생성합니다
+            let marker = new kakao.maps.Marker({
+                position: markerPosition
+            });
+
+            // 마커가 지도 위에 표시되도록 설정합니다
+            marker.setMap(map);
+
+            var iwContent = `
+                <div class="apt-modal">
+                    <h4>${aptName}</h4>
+                    <p>
+                        주소: ${aptDong} ${aptRoadName} ${aptFloor}층<br/>
+                        면적: ${aptArea}㎡ (${Math.floor(aptArea/3.3)}평)
+                    </p>
+                    <button class="showDetailApt">매물정보 상세보기</button>
+                </div>
+            `, // 인포윈도우에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
+                iwPosition = new kakao.maps.LatLng(`${lat}`, `${lng}`); //인포윈도우 표시 위치입니다
+
+            // 인포윈도우를 생성합니다
+            var infowindow = new kakao.maps.InfoWindow({
+                position : iwPosition, 
+                content : iwContent 
+            });
             
+            // 마커 위에 인포윈도우를 표시합니다. 두번째 파라미터인 marker를 넣어주지 않으면 지도 위에 표시됩니다
+            infowindow.open(map,marker);
+            
+            const showDetailApt = document.querySelector('.showDetailApt');
+            showDetailApt.addEventListener('click', () => {
+                let apt = {
+                    aptName,
+                    aptDong,
+                    aptRoadName,
+                    aptFloor,
+                    aptArea,
+                    aptBuildYear,
+                    lat,
+                    lng,
+                }
+                this.$store.commit('aptDetail',apt);
+                this.$router.push('/aptDetail');
+            });
         }
-        
     },
 }
 </script>
@@ -205,6 +291,7 @@ export default {
             li{
                 height:200px;
                 border-bottom: 1px solid #8D8E8D;
+                cursor:pointer;
                 .flex-wrap{
                     height:200px;
                     @include flex(flex, null, center);
@@ -243,6 +330,36 @@ export default {
 
     .main-right{
         @include setSize(100%, 700px);
+        .apt-modal{
+            @include setSize(180px, 180px);
+            border: 1px solid #E5E7EB;
+            background-color:#fff;
+            text-align:center;
+            padding:12px;
+            box-sizing: border-box;
+            @include flex(flex, center, center);
+            flex-direction: column;
+            h4{
+                @include font(14px, 600, #394150);
+                line-height:18px;
+            }
+            p{
+                margin-top:8px;
+                @include font(12px, 400, #404856);
+                line-height:16px;
+                
+            }
+            button{
+                margin-top:14px;
+                @include setSize(140px, 30px);
+                cursor:pointer;
+                background-color:#F3F4F6;
+                border:none;
+                border-radius:8px;
+                @include font(12px, 500, #4470EA);
+            }
+        }
+        
     }
 }
 </style>

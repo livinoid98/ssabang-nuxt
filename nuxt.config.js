@@ -24,7 +24,7 @@ module.exports = {
       },
       {src: "/js/analytics.js"},
       {
-        src: "//dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=6452f1ea135bf01fcf76db4e5eb67011",
+        src: "//dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=6452f1ea135bf01fcf76db4e5eb67011&libraries=services,clusterer,drawing",
       },
     ]
   },
