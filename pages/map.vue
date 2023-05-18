@@ -131,11 +131,20 @@ export default {
             const month = document.querySelector(".month");
             let monthValue = month.options[month.selectedIndex].value;
 
+            if(dongCode=="동" || yearValue=="연도" || monthValue=="월"){
+                alert("지역 또는 날짜를 반드시 입력해주세요.");
+                return;
+            }
+
             let response = await http.get(`/api/map/list/${dongCode}/${yearValue}/${monthValue}`);
             this.apt = response.data;
         },
         async searchApt(){
             let apartmentName = document.querySelector("input[name='apartName']").value;
+            if(apartmentName == ""){
+                alert("검색명을 입력해주세요.");
+                return;
+            }
             let response = await http.get(`/api/map/list/searchbyname/${apartmentName}`);
             this.apt = response.data;
         },

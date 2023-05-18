@@ -161,11 +161,16 @@ export default {
             this.mapComp = map;
             this.mapDupl = map;
 
+            var imageSrc = require("@/assets/img/home-marker.png"), // 마커이미지의 주소입니다    
+                            imageSize = new kakao.maps.Size(64, 69),
+                            imageOption = {offset: new kakao.maps.Point(27, 69)}; // 마커이미지의 크기입니다
+            var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imageOption);
             var markerPosition  = new kakao.maps.LatLng(this.$store.state.apt.lat, this.$store.state.apt.lng); 
 
             // 마커를 생성합니다
             var marker = new kakao.maps.Marker({
-                position: markerPosition
+                position: markerPosition,
+                image: markerImage // 마커이미지 설정 
             });
 
             // 마커가 지도 위에 표시되도록 설정합니다
@@ -180,14 +185,20 @@ export default {
                 level: 3,
             };
             let map = new kakao.maps.Map(container, options);
+            
             this.mapComp = map;
             this.mapDupl = map;
 
+            var imageSrc = require("@/assets/img/home-marker.png"), // 마커이미지의 주소입니다    
+                            imageSize = new kakao.maps.Size(64, 69),
+                            imageOption = {offset: new kakao.maps.Point(27, 69)}; // 마커이미지의 크기입니다
+            var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imageOption);
             var markerPosition  = new kakao.maps.LatLng(this.$store.state.apt.lat, this.$store.state.apt.lng); 
 
             // 마커를 생성합니다
             var marker = new kakao.maps.Marker({
-                position: markerPosition
+                position: markerPosition,
+                image: markerImage // 마커이미지 설정 
             });
 
             // 마커가 지도 위에 표시되도록 설정합니다
@@ -210,16 +221,33 @@ export default {
 
             // 지도에 마커를 표시하는 함수입니다
             function displayMarker(place) {
+
+                var imageSrc = require("@/assets/img/away-marker.png"), // 마커이미지의 주소입니다    
+                    imageSize = new kakao.maps.Size(34, 39),
+                    imageOption = {offset: new kakao.maps.Point(27, 69)}; // 마커이미지의 크기입니다
+                var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imageOption);
+
                 // 마커를 생성하고 지도에 표시합니다
-                var marker = new kakao.maps.Marker({
+                let marker = new kakao.maps.Marker({
                     map: map,
-                    position: new kakao.maps.LatLng(place.y, place.x) 
+                    position: new kakao.maps.LatLng(place.y, place.x),
+                    image: markerImage
+                });
+
+                var iwPosition = new kakao.maps.LatLng(place.y, place.x), //인포윈도우 표시 위치입니다
+                    iwRemoveable = false; // removeable 속성을 ture 로 설정하면 인포윈도우를 닫을 수 있는 x버튼이 표시됩니다
+
+                var infowindow = new kakao.maps.InfoWindow({
+                    position : iwPosition, 
+                    removable : iwRemoveable
                 });
 
                 // 마커에 클릭이벤트를 등록합니다
                 kakao.maps.event.addListener(marker, 'click', function() {
                     // 마커를 클릭하면 장소명이 인포윈도우에 표출됩니다
-                    infowindow.setContent('<div style="padding:5px;font-size:12px;">' + place.place_name + '</div>');
+                    infowindow.setContent(`<div class="apt-modal">
+                    <h4>${place.place_name}</h4>
+                </div>`);
                     infowindow.open(map, marker);
                 });
 
@@ -451,6 +479,21 @@ export default {
                 margin-bottom:180px;
             }
         }
+    }
+}
+
+.apt-modal{
+    @include setSize(160px, 60px);
+    border: 1px solid #E5E7EB;
+    background-color:#fff;
+    text-align:center;
+    padding:12px;
+    box-sizing: border-box;
+    @include flex(flex, center, center);
+    flex-direction: column;
+    h4{
+        @include font(14px, 600, #394150);
+        line-height:18px;
     }
 }
 
