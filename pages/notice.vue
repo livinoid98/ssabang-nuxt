@@ -13,18 +13,20 @@
 		<div class="article-contents">
 			<h3>공지사항</h3>
 			<div class="search-wrap">
-				<select name="" class="titleCode">
-					<option value="title">제목</option>
-                    <option value="content">내용</option>
-                    <option value="titleContent">제목+내용</option>
-				</select>
-				<input
-					type="text"
-					placeholder="검색어를 입력하세요."
-					name="content"
-                    class="searchContent"
-				/>
-                <button class="findNotice" @click="findNotice">검색</button>
+                <form>
+                    <select name="" class="titleCode">
+                        <option value="title">제목</option>
+                        <option value="content">내용</option>
+                        <option value="titleContent">제목+내용</option>
+                    </select>
+                    <input
+                        type="text"
+                        placeholder="검색어를 입력하세요."
+                        name="content"
+                        class="searchContent"
+                    />
+                    <button class="findNotice" @click.prevent="findNotice">검색</button>
+                </form>
 			</div>
 			<table>
 				<colgroup>
@@ -42,8 +44,8 @@
 					</tr>
 				</thead>
 				<tbody>
-					<tr v-for="(article, index) in articles" :key="article.article_no" :article="article" @click="showDetail(`${article.articleNo}`)">
-						<td>{{articlesNm - (((curPageNum-1)*10) + (index))}}</td>
+					<tr v-for="(article, index) in articles" :key="article.articleNo" :article="article" @click="showDetail(`${article.articleNo}`)">
+						<td>{{ articlesNm - (((curPageNum-1)*10) + (index))}}</td>
 						<td>{{ article.title }}</td>
 						<td>{{ article.userId }}</td>
 						<td>{{ article.hitCnt }}</td>
@@ -74,10 +76,15 @@ export default {
     data() {
         return {
             articles: [],
+            originSearchArticles: [],
+            originArticles: [],
+            searchArticles: [],
             articlesNm: 0,
             curPageNum: 1,
             datapage: 10,
             paginationNum: 1,
+            searchType:"",
+            searchValue : "",
         };
     },
     computed: {
@@ -85,40 +92,65 @@ export default {
 	},
     methods:{
         async showDetail(no){
+            let response = await http.put(`/api/notice/hitupdate/${no}`, {
+                
+            });
+            console.log(response);
             this.$router.push(`/detail/${no}`);
         },
         async findNotice(){
             const titleCode = document.querySelector(".titleCode");
             let titleCodeValue = titleCode.options[titleCode.selectedIndex].value;
             const searchContent = document.querySelector(".searchContent").value;
-
-            console.log(titleCodeValue + " " + searchContent);
             
-            let response = await http.post(`/api/notice/search/${titleCodeValue}/${searchContent}`,{
-                title : titleCodeValue,
-                content : searchContent,
+            let response = await http.get(`/api/notice/searchall/${titleCodeValue}/${searchContent}`,{
             });
-            console.log(response);
+            this.originSearchArticles = response.data;
+            let paging1SearchArticles = [];
+            for(let i=0; i<10; i++){
+                paging1SearchArticles.push(this.originSearchArticles[i]);
+            }
+            this.articles = paging1SearchArticles;
+            this.searchArticles = this.originSearchArticles;
+            this.searchValue = searchContent;
+            this.articlesNm = this.searchArticles.length;
         },
         async clickPage(e){
             let li = e.target;
             let pageNum = li.innerText;
-
-            let response = await http.get(`/api/notice/list/${pageNum}`);
-            this.articles = response.data;
-            this.curPageNum = Number(pageNum);
+            if(this.searchValue == ""){
+                let response = await http.get(`/api/notice/list/${pageNum}`);
+                this.articles = response.data;
+                this.curPageNum = Number(pageNum);
+            }else{
+                let pagingSearchArticles = [];
+                let iAmSorryJeongjoon = ((pageNum-1)*10);
+                let finish = iAmSorryJeongjoon+10;
+                console.log(iAmSorryJeongjoon);
+                console.log(finish);
+                console.log(this.searchArticles);
+                if(finish > this.searchArticles.length){
+                    finish = this.searchArticles.length;
+                }
+                console.log(iAmSorryJeongjoon);
+                console.log(finish);
+                for(let i=iAmSorryJeongjoon; i<finish; i++){
+                    pagingSearchArticles.push(this.searchArticles[i]);
+                }
+                this.articles = pagingSearchArticles;
+                this.curPageNum = pageNum;
+            }
         }
     },
     async fetch(){
         const response = await http.get("/api/notice/list/1");
         this.articles = response.data;
+        this.originArticles = response.data;
 
         let numResponse = await http.get("/api/notice/listCnt");
         this.articlesNm = numResponse.data.cnt;
 
-        console.log(this.articlesNm);
-
-        let paginationNum = this.articlesNm / 10;
+        let paginationNum = Math.ceil(this.articlesNm / 10);
         this.paginationNum = paginationNum;
     }
 }
@@ -253,6 +285,9 @@ export default {
                 margin-left:10px;
                 &:nth-child(1){
                     margin-left:0px;
+                }
+                &:focus{
+                    background-color:#326CF9;
                 }
             }
         }

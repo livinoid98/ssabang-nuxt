@@ -46,30 +46,30 @@
 						<tr>
 							<td>휴대전화</td>
 							<td>
-                                <input type="tel" name="phone" required/>
+                                <input type="tel" name="phone"/>
                             </td>
 						</tr>
 						<tr>
 							<td>이메일</td>
-							<td><input type="email" name="email" required/></td>
+							<td><input type="email" name="email"/></td>
 						</tr>
                         <tr>
 							<td>주소</td>
-							<td><input type="text" name="address" required/></td>
+							<td><input type="text" name="address"/></td>
 						</tr>
                         <tr>
 							<td>성별</td>
 							<td>
                                 <select>
-                                    <option value="">선택안함</option>
-                                    <option value="">남</option>
-                                    <option value="">여</option>
+                                    <option value="no">선택안함</option>
+                                    <option value="male">남</option>
+                                    <option value="female">여</option>
                                 </select>
                             </td>
 						</tr>
                         <tr>
 							<td>나이</td>
-							<td><input type="number" name="age" required/></td>
+							<td><input type="number" name="age"/></td>
 						</tr>
 					</table>
 					<h4>개인정보 수집 및 이용 동의</h4>
@@ -108,11 +108,11 @@
 보존 기간 : 재구매시정보이용</textarea>
 					<div class="check">
 						<span>개인정보 수집 및 이용에 동의하십니까?</span>
-						<input type="checkbox" name="agree" />동의함
+						<input type="checkbox" name="agree" reqired/>동의함
 					</div>
 					<div class="submit">
-						<Link href="/"><a><button>취소</button></a></Link>
-						<input type="submit" value="회원가입" />
+						<next-link to="/"><button>취소</button></next-link>
+						<input type="submit" value="회원가입" @click.prevent="submitSignup"/>
 					</div>
 				</form>
 			</div>
@@ -130,6 +130,15 @@ export default {
         return {
             articles: [],
         };
+    },
+    methods:{
+        submitSignup(){
+            const id = document.querySelector("input[name='id']");
+            const password = document.querySelector("input[name='password']");
+            const passwordCheck = document.querySelector("input[name='passwordCheck']");
+            const name = document.querySelector("input[name='name']");
+            console.log("전송");
+        }
     },
     async fetch(){
         
