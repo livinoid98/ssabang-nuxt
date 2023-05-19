@@ -12,10 +12,14 @@ export const state = () => {
 
 export const mutations = {
     saveLogin(state, payload){
-        state.isLogged = true
+        state.isLogged = true;
         state.user = payload;
     },
     aptDetail(state, payload){
         state.apt = payload;
+    },
+    logout(state){
+        state.isLogged = false;
+        state.user = {};
     }
 };

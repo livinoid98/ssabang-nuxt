@@ -16,7 +16,7 @@
                 <h3>{{title}}</h3>
                 <span>{{registTime}}</span>
                 <p>{{content}}</p>
-                <button @click="updateNotice(`${articleNo}`)">수정</button>
+                <button @click="updateNotice(`${articleNo}`)" >수정</button>
                 <button @click="deleteNotice(`${articleNo}`)" >삭제</button>
             </div>
         </div>
@@ -39,7 +39,11 @@ export default {
     },
     methods:{
         async deleteNotice(articleNo){
-            let response = await http.delete(`/api/notice/delete/${articleNo}`);
+            let response = await http.delete(`/api/notice/delete/${articleNo}`,{
+                headers: {
+                    "jwt-auth-token": this.$store.state.user.authToken,
+                },
+            });
             if(response.data.delete === true){
                 this.$router.push('/notice');
             }

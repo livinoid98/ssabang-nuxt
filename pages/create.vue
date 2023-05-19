@@ -60,6 +60,10 @@
           userId: this.userId,
           title: this.title,
           content: this.content,
+        },{
+          headers: {
+            "jwt-auth-token": this.$store.state.user.authToken,
+          },
         });
 
         if(response.data.insert === true){

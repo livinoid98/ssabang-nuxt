@@ -38,6 +38,7 @@
 
 <script>
   import http from "@/assets/api/http.js";
+  import {mapState} from 'vuex';
 
   export default {
     name: "update",
@@ -49,6 +50,9 @@
             content: "",
         };
     },
+    computed: {
+      ...mapState(["isLogged","user"]),
+    },  
     methods:{
         async updateNotice(e){
             e.preventDefault();
@@ -57,6 +61,10 @@
                 userId : this.userId,
                 title : this.title,
                 content: this.content,
+            },{
+              headers:{
+                "jwt-auth-token": this.$store.state.user.authToken,
+              },
             })
             if(response.data.update === true){
                 this.$router.push('/notice');

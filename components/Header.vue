@@ -60,13 +60,13 @@
 						<h2><nuxt-link to="login">로그인</nuxt-link></h2>
 					</li>
 					<li class="signup" v-if="!isLogged">
-						<h2><a href="/signup">회원가입</a></h2>
+						<h2><nuxt-link to="signup">회원가입</nuxt-link></h2>
 					</li>
 					<li v-if="isLogged">
 						<h2><span>{{user.name}}({{user.userId}})</span>님 안녕하세요</h2>
 					</li>
-					<li class="logout" v-if="isLogged">
-						<h2><a href="/logout">로그아웃</a></h2>
+					<li class="logout" v-if="isLogged" @click="logout" style="cursor:pointer;">
+						<h2>로그아웃</h2>
 					</li>
 				</ul>
 			</nav>
@@ -91,7 +91,11 @@ export default {
 	methods:{
 		...mapMutations([
 			'saveLogin',
+			'logout',
 		]),
+		logout(){
+			this.$store.commit('logout');
+		}
 	},
 }
 </script>

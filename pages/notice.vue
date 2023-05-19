@@ -13,14 +13,18 @@
 		<div class="article-contents">
 			<h3>공지사항</h3>
 			<div class="search-wrap">
-				<select name="" id="">
-					<option value="">제목</option>
+				<select name="" class="titleCode">
+					<option value="title">제목</option>
+                    <option value="content">내용</option>
+                    <option value="titleContent">제목+내용</option>
 				</select>
 				<input
 					type="text"
 					placeholder="검색어를 입력하세요."
 					name="content"
+                    class="searchContent"
 				/>
+                <button class="findNotice" @click="findNotice">검색</button>
 			</div>
 			<table>
 				<colgroup>
@@ -38,16 +42,21 @@
 					</tr>
 				</thead>
 				<tbody>
-					
-					<tr v-for="article in articles" :key="article.article_no" :article="article" @click="showDetail(`${article.articleNo}`)">
-						<td>{{ article.articleNo }}</td>
+					<tr v-for="(article, index) in articles" :key="article.article_no" :article="article" @click="showDetail(`${article.articleNo}`)">
+						<td>{{ articlesNm - paginationNum*10 - index }}</td>
 						<td>{{ article.title }}</td>
 						<td>{{ article.userId }}</td>
 						<td>{{ article.hitCnt }}</td>
 					</tr>
-
 				</tbody>
 			</table>
+            <div class="pagination">
+                <ul>
+                    <li v-for="page in this.paginationNum" :key="page" @click="clickPage($event)">
+                        {{page}}
+                    </li>
+                </ul>
+            </div>
 			<div class="button-wrap">
 				<nuxt-link to="/create" v-if="user.userId === 'ssafy'"><button>글 쓰기</button></nuxt-link>
 			</div>
@@ -65,6 +74,10 @@ export default {
     data() {
         return {
             articles: [],
+            articlesNm: 0,
+            curpagenum: 1,
+            datapage: 10,
+            paginationNum: 1,
         };
     },
     computed: {
@@ -73,11 +86,38 @@ export default {
     methods:{
         async showDetail(no){
             this.$router.push(`/detail/${no}`);
+        },
+        async findNotice(){
+            const titleCode = document.querySelector(".titleCode");
+            let titleCodeValue = titleCode.options[titleCode.selectedIndex].value;
+            const searchContent = document.querySelector(".searchContent").value;
+
+            console.log(titleCodeValue + " " + searchContent);
+            
+            let response = await http.post(`/api/notice/search/${titleCodeValue}/${searchContent}`,{
+                title : titleCodeValue,
+                content : searchContent,
+            });
+            console.log(response);
+        },
+        async clickPage(e){
+            let li = e.target;
+            let pageNum = li.innerText;
+
+            let response = await http.get(`/api/notice/list/${pageNum}`);
+            console.log(response.data);
+            this.articles = response.data;
         }
     },
     async fetch(){
         const response = await http.get("/api/notice/list/1");
         this.articles = response.data;
+
+        let numResponse = await http.get("/api/notice/listCnt");
+        this.articlesNm = numResponse.data.cnt;
+
+        let paginationNum = this.articlesNm / 10;
+        this.paginationNum = paginationNum;
     }
 }
 
@@ -142,6 +182,7 @@ export default {
             border:2px solid #E7E7E7;
             @include font(13px, 400, #DBDBDB);
             margin-right:20px;
+            padding:8px;
         }
         option{
             @include setSize(300px, 40px);
@@ -152,6 +193,18 @@ export default {
             border:2px solid #E7E7E7;
             box-sizing: border-box;
             padding:10px;
+        }
+        .findNotice{
+            @include setSize(80px, 40px);
+            border:none;
+            border-radius:4px;
+            @include font(13px, 500, #000);
+            margin-left:12px;
+            cursor:pointer;
+            &:hover{
+                background-color:#326CF9;
+                @include font(14px, 400, #fff);
+            }
         }
     }
     table{
@@ -180,6 +233,24 @@ export default {
                 td{
                     height:52px;
                     line-height:52px;
+                }
+            }
+        }
+    }
+    .pagination{
+        @include block-center(1000px);
+        margin-top:40px;
+        ul{
+            @include flex(flex,center,center);
+            li{
+                @include setSize(30px, 30px);
+                @include flex(flex, center, center);
+                cursor:pointer;
+                border:1px solid #E7E7E7;
+                @include font(12px, 400, #8A8A8A);
+                margin-left:10px;
+                &:nth-child(1){
+                    margin-left:0px;
                 }
             }
         }

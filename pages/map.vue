@@ -52,11 +52,11 @@
 			</form>
 		</div>
 		<div class="main">
-			<div class="map-left">
+			<div class="map-left" >
                 <div class="no-search-img-wrap" v-if="apt.length == 0">
                     <img src="@/assets/img/no-search.png" alt="">
                 </div>
-				<ul>
+				<ul class="apt-info-list" style="display:none;">
                     <li v-for="(apt, index) in apt" :key="index" :apt="apt" @click="aptDetail(`${apt.lng}`, `${apt.lat}`, `${apt.apartmentName}`, `${apt.dong}`, `${apt.roadName}`, `${apt.floor}`, `${apt.area}`, `${apt.buildYear}`)">
                         <div class="flex-wrap">
                             <div class="img-wrap">
@@ -143,6 +143,9 @@ export default {
 
             let response = await http.get(`/api/map/list/${dongCode}/${yearValue}/${monthValue}`);
             this.apt = response.data;
+
+            const aptList = document.querySelector(".apt-info-list");
+            aptList.style.display = "block";
         },
         async searchApt(){
             let apartmentName = document.querySelector("input[name='apartName']").value;
@@ -152,6 +155,9 @@ export default {
             }
             let response = await http.get(`/api/map/list/searchbyname/${apartmentName}`);
             this.apt = response.data;
+
+            const aptList = document.querySelector(".apt-info-list");
+            aptList.style.display = "block";
         },
         aptDetail(lng, lat, aptName, aptDong, aptRoadName, aptFloor, aptArea, aptBuildYear){
             let mapContainer = document.querySelector('.main-right'), // 지도를 표시할 div 

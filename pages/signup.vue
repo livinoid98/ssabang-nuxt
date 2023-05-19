@@ -132,8 +132,7 @@ export default {
         };
     },
     async fetch(){
-        const response = await axios.get("http://localhost:8080/api/user/signup");
-        this.articles = response.data;
+        
     }
 }
 
