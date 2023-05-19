@@ -58,7 +58,7 @@
                 </div>
 				<ul class="apt-info-list" style="display:none;">
                     <li v-for="(apt, index) in apt" :key="index" :apt="apt" @click="aptDetail(`${apt.lng}`, `${apt.lat}`, `${apt.apartmentName}`, `${apt.dong}`, `${apt.roadName}`, `${apt.floor}`, `${apt.area}`, `${apt.buildYear}`)">
-                        <div class="flex-wrap">
+                        <div class="flex-wrap" @click="addCart(apt)">
                             <div class="img-wrap">
                                 <img src="@/assets/img/room2.png" alt=""/>
                             </div>
@@ -215,6 +215,10 @@ export default {
                 this.$store.commit('aptDetail',apt);
                 this.$router.push('/aptDetail');
             });
+        },
+        addCart(apt){
+            console.log(apt);
+            this.$store.commit('addCart', apt);
         }
     },
 }
@@ -293,8 +297,9 @@ export default {
         @include setSize(600px, 700px);
         overflow-y: scroll;
         .no-search-img-wrap{
-            margin-top:40px;
             width:100%;
+            padding:40px;
+            box-sizing: border-box;
             img{
                 width:100%;
             }

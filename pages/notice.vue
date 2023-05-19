@@ -133,14 +133,9 @@ export default {
                 let pagingSearchArticles = [];
                 let iAmSorryJeongjoon = ((pageNum-1)*10);
                 let finish = iAmSorryJeongjoon+10;
-                console.log(iAmSorryJeongjoon);
-                console.log(finish);
-                console.log(this.searchArticles);
                 if(finish > this.searchArticles.length){
                     finish = this.searchArticles.length;
                 }
-                console.log(iAmSorryJeongjoon);
-                console.log(finish);
                 for(let i=iAmSorryJeongjoon; i<finish; i++){
                     pagingSearchArticles.push(this.searchArticles[i]);
                 }

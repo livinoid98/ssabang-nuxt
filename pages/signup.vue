@@ -17,7 +17,7 @@
 				<p>회원가입을 위한 필수입력 항목</p>
 			</div>
 			<div class="sign_up_content">
-				<form action="/signup" method="post">
+				<form>
 					<table>
 						<tr>
 							<td>아이디</td>
@@ -33,7 +33,7 @@
 						</tr>
 						<tr>
 							<td>이름</td>
-							<td><input type="text" name="name" required/></td>
+							<td><input type="text" name="userName" required/></td>
 						</tr>
                     </table>
 
@@ -60,7 +60,7 @@
                         <tr>
 							<td>성별</td>
 							<td>
-                                <select>
+                                <select class="gender">
                                     <option value="no">선택안함</option>
                                     <option value="male">남</option>
                                     <option value="female">여</option>
@@ -121,7 +121,7 @@
 </template>
 
 <script>
-import axios from "axios";
+import http from '@/assets/api/http.js';
 
 export default {
     name: "signup",
@@ -132,12 +132,73 @@ export default {
         };
     },
     methods:{
-        submitSignup(){
-            const id = document.querySelector("input[name='id']");
-            const password = document.querySelector("input[name='password']");
-            const passwordCheck = document.querySelector("input[name='passwordCheck']");
-            const name = document.querySelector("input[name='name']");
-            console.log("전송");
+        async submitSignup(){
+            const id = document.querySelector("input[name='id']").value;
+            const password = document.querySelector("input[name='password']").value;
+            const passwordCheck = document.querySelector("input[name='passwordCheck']").value;
+            const userName = document.querySelector("input[name='userName']").value;
+            const phone = document.querySelector("input[name='phone']").value;
+            const email = document.querySelector("input[name='email']").value;
+            const address = document.querySelector("input[name='address']").value;
+            const gender = document.querySelector(".gender");
+            let genderValue = gender.options[gender.selectedIndex].value;
+            const check = document.querySelector("input[name='agree']");
+
+            if(id == ""){
+                alert("이름을 입력해주세요.");
+                return;
+            }
+
+            if(password == ""){
+                alert("비밀번호를 입력해주세요.");
+                return;
+            }
+
+            if(password != passwordCheck){
+                alert("비밀번호가 다릅니다.");
+                return;
+            }
+
+            if(userName == ""){
+                alert("이름을 입력해주세요.");
+                return;
+            }
+
+            const phoneRegex1 = /\d{3}-\d{4}-\d{4}/;
+            const phoneRegex2 = /\d{3}\d{4}\d{4}/;
+            if(phone.length > 0){
+                if(!phoneRegex1.test(phone) && !phoneRegex2.test(phone)){
+                    alert("전화번호는 010-1234-5678 형식에 맞춰 작성해주세요.");
+                    return;
+                }
+            }
+
+            const emailRegex = new RegExp(/[a-z0-9]+@[a-z]+\.[a-z]{2,3}/);
+            if(email.length>0){
+                if(!emailRegex.test(email)){
+                    alert("이메일은 ssabang@naver.com 형식으로 작성해주세요.");
+                    return;
+                }
+            }
+
+            if(check.checked == false) {
+                alert("개인정보 수집에 동의해주세요.");
+                return;
+            }
+
+            let response = await http.post('/api/user/signup', {
+                name : userName,
+                userId : id,
+                userPw : password,
+                phone : phone,
+                email : email,
+                address : address,
+                gender : genderValue,
+            });
+
+            console.log(response);
+
+
         }
     },
     async fetch(){

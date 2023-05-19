@@ -7,6 +7,7 @@ export const state = () => {
         apt:{
             
         },
+        cart:[],
     }
 };
 
@@ -21,5 +22,11 @@ export const mutations = {
     logout(state){
         state.isLogged = false;
         state.user = {};
+    },
+    addCart(state, payload){
+        state.cart.push(payload);
+        if(state.cart.length > 3){
+            state.cart.shift();
+        }
     }
 };
