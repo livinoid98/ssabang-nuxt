@@ -39,6 +39,15 @@ export default {
     },
     methods:{
         async deleteNotice(articleNo){
+            let stateResponse = await http.get(`/api/notice/updateDetail/${articleNo}`,{
+                headers:{
+                    "jwt-auth-token": this.$store.state.user.authToken,
+                }
+            });
+            if(stateResponse.data == ""){
+                alert("관리자외에는 게시글을 삭제할 수 없습니다.");
+                return;
+            }
             let response = await http.delete(`/api/notice/delete/${articleNo}`,{
                 headers: {
                     "jwt-auth-token": this.$store.state.user.authToken,
@@ -48,7 +57,16 @@ export default {
                 this.$router.push('/notice');
             }
         },
-        updateNotice(articleNo){
+        async updateNotice(articleNo){
+            let stateResponse = await http.get(`/api/notice/updateDetail/${articleNo}`,{
+                headers:{
+                    "jwt-auth-token": this.$store.state.user.authToken,
+                }
+            });
+            if(stateResponse.data == ""){
+                alert("관리자외에는 게시글을 수정할 수 없습니다.");
+                return;
+            }
             this.$router.push(`/update/${articleNo}`);
         }
     },

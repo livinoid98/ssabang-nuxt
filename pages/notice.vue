@@ -43,7 +43,7 @@
 				</thead>
 				<tbody>
 					<tr v-for="(article, index) in articles" :key="article.article_no" :article="article" @click="showDetail(`${article.articleNo}`)">
-						<td>{{ articlesNm - paginationNum*10 - index }}</td>
+						<td>{{articlesNm - (((curPageNum-1)*10) + (index))}}</td>
 						<td>{{ article.title }}</td>
 						<td>{{ article.userId }}</td>
 						<td>{{ article.hitCnt }}</td>
@@ -75,7 +75,7 @@ export default {
         return {
             articles: [],
             articlesNm: 0,
-            curpagenum: 1,
+            curPageNum: 1,
             datapage: 10,
             paginationNum: 1,
         };
@@ -105,8 +105,8 @@ export default {
             let pageNum = li.innerText;
 
             let response = await http.get(`/api/notice/list/${pageNum}`);
-            console.log(response.data);
             this.articles = response.data;
+            this.curPageNum = Number(pageNum);
         }
     },
     async fetch(){
@@ -115,6 +115,8 @@ export default {
 
         let numResponse = await http.get("/api/notice/listCnt");
         this.articlesNm = numResponse.data.cnt;
+
+        console.log(this.articlesNm);
 
         let paginationNum = this.articlesNm / 10;
         this.paginationNum = paginationNum;

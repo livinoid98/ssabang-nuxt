@@ -66,6 +66,11 @@
                 "jwt-auth-token": this.$store.state.user.authToken,
               },
             })
+
+            if(response.data == ""){
+              console.log("관리자가 아니여서 실행할 수 없습니다.");
+            }
+            
             if(response.data.update === true){
                 this.$router.push('/notice');
             }
