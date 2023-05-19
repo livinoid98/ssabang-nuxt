@@ -107,13 +107,20 @@ export default {
             });
             this.originSearchArticles = response.data;
             let paging1SearchArticles = [];
-            for(let i=0; i<10; i++){
-                paging1SearchArticles.push(this.originSearchArticles[i]);
+            if(response.data.length < 10){
+                for(let i=0; i<response.data.length; i++){
+                    paging1SearchArticles.push(this.originSearchArticles[i]);
+                }
+            }else{
+                for(let i=0; i<10; i++){
+                    paging1SearchArticles.push(this.originSearchArticles[i]);
+                }
             }
             this.articles = paging1SearchArticles;
             this.searchArticles = this.originSearchArticles;
             this.searchValue = searchContent;
             this.articlesNm = this.searchArticles.length;
+            this.paginationNum = Math.ceil(this.articlesNm / 10);
         },
         async clickPage(e){
             let li = e.target;
@@ -211,33 +218,38 @@ export default {
         @include flex(flex, flex-end);
         margin-right:100px;
         margin-top:56px;
-        select{
-            @include setSize(80px, 40px);
-            border:2px solid #E7E7E7;
-            @include font(13px, 400, #DBDBDB);
-            margin-right:20px;
-            padding:8px;
-        }
-        option{
-            @include setSize(300px, 40px);
-            border:2px solid #E7E7E7;
-            @include font(13px, 400, #DBDBDB);
-        }
-        input{
-            border:2px solid #E7E7E7;
-            box-sizing: border-box;
-            padding:10px;
-        }
-        .findNotice{
-            @include setSize(80px, 40px);
-            border:none;
-            border-radius:4px;
-            @include font(13px, 500, #000);
-            margin-left:12px;
-            cursor:pointer;
-            &:hover{
-                background-color:#326CF9;
-                @include font(14px, 400, #fff);
+        form{
+            select{
+                @include setSize(80px, 40px);
+                border:2px solid #E7E7E7;
+                @include font(13px, 400, #888);
+                margin-right:8px;
+                padding:8px;
+            }
+            option{
+                @include setSize(300px, 40px);
+                border:2px solid #E7E7E7;
+                @include font(13px, 400, #888);
+            }
+            input{
+                @include setSize(260px, 40px);
+                border-radius:0px;
+                border:2px solid #E7E7E7;
+                box-sizing: border-box;
+                background-color: transparent;
+                padding:10px;
+            }
+            .findNotice{
+                @include setSize(80px, 40px);
+                border:none;
+                border-radius:4px;
+                @include font(13px, 500, #888);
+                margin-left:8px;
+                cursor:pointer;
+                &:hover{
+                    background-color:#326CF9;
+                    @include font(14px, 400, #fff);
+                }
             }
         }
     }
