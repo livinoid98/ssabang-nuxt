@@ -53,6 +53,9 @@
 		</div>
 		<div class="main">
 			<div class="map-left">
+                <div class="no-search-img-wrap" v-if="apt.length == 0">
+                    <img src="@/assets/img/no-search.png" alt="">
+                </div>
 				<ul>
                     <li v-for="(apt, index) in apt" :key="index" :apt="apt" @click="aptDetail(`${apt.lng}`, `${apt.lat}`, `${apt.apartmentName}`, `${apt.dong}`, `${apt.roadName}`, `${apt.floor}`, `${apt.area}`, `${apt.buildYear}`)">
                         <div class="flex-wrap">
@@ -89,7 +92,9 @@ export default {
             si:[],
             gugun: [],
             dong:[],
-            apt:[],
+            apt:[{
+                id:1,
+            }],
         };
     },
     mounted(){
@@ -281,6 +286,13 @@ export default {
     .map-left{
         @include setSize(600px, 700px);
         overflow-y: scroll;
+        .no-search-img-wrap{
+            margin-top:40px;
+            width:100%;
+            img{
+                width:100%;
+            }
+        }
         .main-left-info{
             @include setSize(100%, 186px);
             display:flex;
