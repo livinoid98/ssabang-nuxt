@@ -20,7 +20,7 @@ module.exports = {
     ],
     script: [
       {
-        src: "https://www.googletagmanager.com/gtag/js?id=G-0QMF1DRQ5M",
+        src: "https://www.googletagmanager.com/gtag/js?id=G-PV6HKG7VYW",
         async: true,
       },
       {src: "/js/analytics.js"},
