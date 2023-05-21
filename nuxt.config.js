@@ -20,12 +20,15 @@ module.exports = {
     ],
     script: [
       {
-        src: "https://www.googletagmanager.com/gtag/js?id=G-0QMF1DRQ5M",
+        src: "https://www.googletagmanager.com/gtag/js?id=UA-268963578-1",
         async: true,
       },
       {src: "/js/analytics.js"},
       {
         src: "//dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=6452f1ea135bf01fcf76db4e5eb67011&libraries=services,clusterer,drawing",
+      },
+      {
+        src: "https://developers.kakao.com/sdk/js/kakao.js",
       },
     ]
   },

@@ -255,6 +255,13 @@ export default {
             this.mapComp = map;
         },
         shareKakao(){
+
+            let aptName = this.$store.state.apt.aptName;
+            let aptDong = this.$store.state.apt.aptDong;
+            let aptRoadName = this.$store.state.apt.aptRoadName;
+            let aptFloor = this.$store.state.apt.aptFloor;
+            let aptArea = this.$store.state.apt.aptArea;
+            let aptCalcArea = Math.ceil(this.$store.state.apt.aptArea/3.3);
             if (!Kakao.isInitialized()) {
                 Kakao.init('6452f1ea135bf01fcf76db4e5eb67011');
             }
@@ -264,8 +271,8 @@ export default {
                     requestUrl: 'http://localhost:3000/', // 페이지 url
                     templateId: 93990, // 메시지템플릿 번호
                     templateArgs: {
-                        TITLE: this.$store.state.apt.apartmentName, // 제목 텍스트 ${TITLE}
-                        DESC: this.$store.state.apt.aptDong + " " + this.$store.state.apt.aptRoadName + " " + this.$store.state.apt.floor + "층 (" + this.$store.state.apt.aptArea + " ㎡)", // 설명 텍스트 ${DESC}
+                        TITLE: aptName, // 제목 텍스트 ${TITLE}
+                        DESC: aptDong + " " + aptRoadName + " " + aptFloor + "층 (" + aptArea + " ㎡, " + aptCalcArea + "평)", // 설명 텍스트 ${DESC}
                     },
                 });
             };
