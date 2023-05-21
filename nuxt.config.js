@@ -36,13 +36,11 @@ module.exports = {
   ],
   sitemap: {
     hostname: 'https://ssabang.vercel.app',
-    lastmod: '2023-05-21',
-    sitemaps:[
-      {
-        path: '/sitemap.xml',
-        routes: ['map', 'list', 'news', 'notice', 'login', 'signup'],
-        gzip: true,
-      }
+    gzip: true,
+    exclude: [
+      '/admin/**',
+    ],
+    routes: [
     ],
   },
   robots:{
