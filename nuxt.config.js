@@ -7,7 +7,8 @@ module.exports = {
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      { hid: 'description', name: 'description', content: 'make ssabang with nuxt.js and springboot in ssafy' }
+      { hid: 'description', name: 'description', content: 'make ssabang with nuxt.js and springboot in ssafy' },
+      { name: 'google-site-verification', content: 'iLarRP0AHOAX-RBl7ayP9nb9PI0lhBoklH7jZHWmaK4'},
     ],
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
