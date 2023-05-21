@@ -200,6 +200,7 @@ footer{
     right:30px;
     top:50%;
     transform: translateY(-50%);
+    z-index:999;
     .cart-title{
         @include setSize(130px, 40px);
         background-color:#444444;
