@@ -37,8 +37,9 @@ module.exports = {
   sitemap: {
     hostname: 'https://ssabang.vercel.app',
     gzip: true,
+    path: '/sitemap.xml',
     exclude: [
-      '/admin/**',
+      '/admin/**'
     ],
     routes: [
     ],
