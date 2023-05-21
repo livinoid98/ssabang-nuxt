@@ -39,6 +39,10 @@ module.exports = {
   ],
   googleAnalytics:{
     id: "G-PV6HKG7VYW",
+    debug: {
+      enabled: true,
+      sendHitTask: true,
+    },
   },
   sitemap: {
     hostname: 'https://ssabang.vercel.app',
