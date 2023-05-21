@@ -34,6 +34,12 @@ module.exports = {
     "@nuxtjs/robots",
     "@nuxtjs/sitemap",
   ],
+  buildmodules:[
+    '@nuxtjs/google-analytics',
+  ],
+  googleAnalytics:{
+    id: "G-PV6HKG7VYW",
+  },
   sitemap: {
     hostname: 'https://ssabang.vercel.app',
     gzip: true,
