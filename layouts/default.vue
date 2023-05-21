@@ -3,6 +3,30 @@
     <client-only>
         <Header/>
         <nuxt/>
+        <div class="cart">
+			<div class="cart-title">
+				<h3>최근 본 매물 : </h3>
+			</div>
+			<div class="cart-content">
+				<ul>
+					<li v-for="(cart,index) in cart" :key="index">
+						<img src="@/assets/img/room1.png" alt=""/>
+						<h4>{{cart.apartmentName}}</h4>
+						<p>{{cart.dong}} {{cart.roadName}} {{cart.floor}}층</p>
+					</li>
+				</ul>
+			</div>
+			<div class="button-wrap">
+				<ul>
+					<li>
+						<button><img src="@/assets/img/arrow-icon.png" alt=""></button>
+					</li>
+					<li>
+						<button><img src="@/assets/img/arrow-icon.png" alt=""></button>
+					</li>
+				</ul>
+			</div>
+		</div>
         <Footer/>
     </client-only>
   </div>
@@ -11,9 +35,13 @@
 <script>
 import Header from "@/components/Header.vue";
 import Footer from "@/components/Footer.vue";
+import {mapState} from 'vuex';
 
 export default {
-  components: {Header, Footer}
+    components: {Header, Footer},
+    computed: {
+        ...mapState(["cart"]),
+    },
 }
 </script>
 
@@ -163,6 +191,72 @@ footer{
         }
         .copyright-logo{
             margin-top:16px;
+        }
+    }
+}
+
+.cart{
+    position:fixed;
+    right:30px;
+    top:50%;
+    transform: translateY(-50%);
+    .cart-title{
+        @include setSize(130px, 40px);
+        background-color:#444444;
+        @include flex(flex, center, center);
+        @include font(13px, 400, #fff);
+    }
+    .cart-content{
+        @include setSize(130px);
+        background-color:#fff;
+        border:1px solid #ddd;
+        padding:10px;
+        box-sizing: border-box;
+        ul{
+            li{
+                padding: 10px 0px;
+                text-align: center;
+                img{
+                    @include setSize(100px, 100px);
+                }
+                h4{
+                    @include font(12px, 400, #8F8F8F);
+                    margin-top:6px;
+                    line-height:14px;
+                }
+                p{
+                    @include font(10px, 400, #ACADA8);
+                    margin-top:2px;
+                    line-height:14px;
+                }
+            }
+        }
+    }
+    .button-wrap{
+        @include setSize(130px, 26px);
+        ul{
+            height:100%;
+            @include flex(flex, center, center);
+            li{
+                @include setSize(100%, 100%);
+                button{
+                    @include setSize(100%, 100%);
+                    background-color: #fff;
+                    border:1px solid #ddd;
+                    border-top:none;
+                    cursor:pointer;
+                    img{
+                        @include setSize(16px, 16px);
+                    }
+                }
+                &:nth-child(1){
+                    button{
+                        img{
+                            transform: rotate(180deg);
+                        }
+                    }
+                }
+            }
         }
     }
 }

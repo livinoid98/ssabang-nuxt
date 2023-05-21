@@ -168,7 +168,7 @@ export default {
             const phoneRegex2 = /\d{3}\d{4}\d{4}/;
             if(phone.length > 0){
                 if(!phoneRegex1.test(phone) && !phoneRegex2.test(phone)){
-                    alert("전화번호는 010-1234-5678 형식에 맞춰 작성해주세요.");
+                    alert("전화번호는 01012345678 형식에 맞춰 작성해주세요.");
                     return;
                 }
             }

@@ -32,6 +32,8 @@
     }
 }
 
+
+
 footer{
     @include setSize(100%, 340px);
     @include flex(flex, null, center);
