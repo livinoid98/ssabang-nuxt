@@ -23,7 +23,7 @@
                 </div>
                 <div class="apt-share">
                     <ul>
-                        <li>
+                        <li class="share-kakao" @click="shareKakao">
                             <img src="@/assets/img/kakao-icon.png" alt="">
                             <span>카카오톡 공유하기</span>
                         </li>
@@ -254,6 +254,24 @@ export default {
             }
             this.mapComp = map;
         },
+        shareKakao(){
+            if (!Kakao.isInitialized()) {
+                Kakao.init('6452f1ea135bf01fcf76db4e5eb67011');
+            }
+
+            let sendKakao = function() {
+                Kakao.Link.sendScrap({
+                    requestUrl: 'http://localhost:3000/', // 페이지 url
+                    templateId: 93990, // 메시지템플릿 번호
+                    templateArgs: {
+                        TITLE: this.$store.state.apt.apartmentName, // 제목 텍스트 ${TITLE}
+                        DESC: this.$store.state.apt.aptDong + " " + this.$store.state.apt.aptRoadName + " " + this.$store.state.apt.floor + "층 (" + this.$store.state.apt.aptArea + " ㎡)", // 설명 텍스트 ${DESC}
+                    },
+                });
+            };
+
+            sendKakao();
+        }
     },
 };
 </script>
