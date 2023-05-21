@@ -20,7 +20,7 @@ module.exports = {
     ],
     script: [
       {
-        src: "https://www.googletagmanager.com/gtag/js?id=G-PV6HKG7VYW",
+        src: "https://www.googletagmanager.com/gtag/js?id=G-0QMF1DRQ5M",
         async: true,
       },
       {src: "/js/analytics.js"},
@@ -34,16 +34,6 @@ module.exports = {
     "@nuxtjs/robots",
     "@nuxtjs/sitemap",
   ],
-  buildmodules:[
-    '@nuxtjs/google-analytics',
-  ],
-  googleAnalytics:{
-    id: "G-PV6HKG7VYW",
-    debug: {
-      enabled: true,
-      sendHitTask: true,
-    },
-  },
   sitemap: {
     hostname: 'https://ssabang.vercel.app',
     gzip: true,
