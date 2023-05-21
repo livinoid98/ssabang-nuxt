@@ -5,7 +5,7 @@
         <nuxt/>
         <div class="cart">
 			<div class="cart-title">
-				<h3>최근 본 매물 : </h3>
+				<h3>최근 본 매물 : {{cart.length}} </h3>
 			</div>
 			<div class="cart-content">
 				<ul>

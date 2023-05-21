@@ -28,7 +28,32 @@ module.exports = {
       },
     ]
   },
-  modules:["@nuxtjs/axios"],
+  modules:[
+    "@nuxtjs/axios",
+    "@nuxtjs/robots",
+    "@nuxtjs/sitemap",
+  ],
+  sitemap: {
+    hostname: 'https://ssabang.vercel.app',
+    gzip: true,
+    exclude:[
+      '/secret',
+      '/admin/**'
+    ],
+    routes:[
+      '/map',
+      '/list',
+      '/news',
+      '/notice',
+      '/login',
+      '/signup',
+    ],
+  },
+  robots:{
+    UserAgent: '*',
+    Disallow: '/admin',
+    Allow: '/',
+  },
   plugins: [
     {
       src: '~plugins/persistedState.js',
