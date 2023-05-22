@@ -98,11 +98,11 @@ export default {
         };
     },
     head: () => ({
-        title: "부동산 매물 보기 - 싸방",
+        title: "매물 찾기 - 싸방",
         meta: [
             {
                 name: 'title',
-                content: '부동산 매물 보기 - 싸방',
+                content: '매물 찾기 - 싸방',
             },
             {
                 name: 'description',
