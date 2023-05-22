@@ -29,7 +29,7 @@
 			<h3>Today's 인기하우스</h3>
 			<ul>
 				<li>
-					<a href="#">
+					<nuxt-link to="/">
 						<div class="recommend-img-wrap">
 							<img src="@/assets/img/room1.png" alt="" />
 						</div>
@@ -47,10 +47,10 @@
 								</tr>
 							</table>
 						</div>
-					</a>
+					</nuxt-link>
 				</li>
 				<li>
-					<a href="#">
+					<nuxt-link to="/">
 						<div class="recommend-img-wrap">
 							<img src="@/assets/img/room2.png" alt="" />
 						</div>
@@ -68,10 +68,10 @@
 								</tr>
 							</table>
 						</div>
-					</a>
+					</nuxt-link>
 				</li>
 				<li>
-					<a href="#">
+					<nuxt-link to="/">
 						<div class="recommend-img-wrap">
 							<img src="@/assets/img/room3.png" alt="" />
 						</div>
@@ -89,7 +89,7 @@
 								</tr>
 							</table>
 						</div>
-					</a>
+					</nuxt-link>
 				</li>
 			</ul>
 		</div>
@@ -99,12 +99,12 @@
 				<p>부동산 시장의 유용한 정보를 한곳에서!</p>
 			</div>
 			<div class="info-contents">
-				<a href="/map">
+				<nuxt-link to="/map">
 					<div class="real-price-wrap">
 						<h4>실거래가<br />알아보기</h4>
 					</div>
-				</a>
-				<a href="/news">
+				</nuxt-link>
+				<nuxt-link to="/news">
 					<div class="news-wrap">
 						<div class="news-img-wrap">
 							<img src="@/assets/img/news-thumbnail.jpg" alt="" />
@@ -114,8 +114,8 @@
 							<p>아파트값 하락폭 축소와 확대 반복</p>
 						</div>
 					</div>
-				</a>
-				<a href="/notice">
+				</nuxt-link>
+				<nuxt-link to="/notice">
 					<div class="article-wrap">
 						<h3>공지/뉴스</h3>
 						<div class="separate-line"></div>
@@ -146,7 +146,7 @@
 							</tr>
 						</table>
 					</div>
-				</a>
+				</nuxt-link>
 			</div>
 		</div>
   </section>
@@ -157,8 +157,16 @@ export default {
     head: () => ({
         meta: [
             {
+                name: 'title',
+                content: '내 집 마련의 시작, 싸방',
+            },
+            {
                 name: 'description',
                 content: '싸방은 전문 부동산 중개 웹사이트로, 최상의 부동산 거래를 위한 서비스를 제공합니다. 저희 플랫폼은 매물의 노출과 홍보를 위한 다양한 마케팅 도구와 기능을 제공합니다. 우리의 목표는 고객에게 안전하고 신뢰할 수 있는 부동산 거래 환경을 제공하는 것입니다. 저희 웹사이트는 다양한 부동산 매물 정보를 제공하며, 구매자와 판매자가 원활하게 소통하고 거래를 진행할 수 있는 플랫폼을 제공합니다.',
+            },
+            {
+                name: 'keywords',
+                content: '싸방, 부동산 중개 플랫폼, 부동산, 매매, 시세, 부동산 시세'
             }
         ],
     }),
