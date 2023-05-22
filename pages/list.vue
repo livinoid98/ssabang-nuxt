@@ -160,11 +160,11 @@
 <script>
 export default {
 	head: () => ({
-		title: "매물 정보 - 싸방",
+		title: "매물정보 - 싸방",
 		meta: [
 			{
 				name: 'title',
-				content: '매물 정보 - 싸방',
+				content: '매물정보 - 싸방',
 			},
 			{
 				name: 'description',
