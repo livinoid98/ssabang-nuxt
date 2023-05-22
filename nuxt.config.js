@@ -44,7 +44,7 @@ module.exports = {
     hostname: 'https://ssabang.vercel.app',
     lastmod: '2023-05-23',
     gzip: true,
-    path: '/sitemap.xml',
+    path: '/static/sitemap.xml',
     exclude: [
       '/admin/**',
       '/detail',
@@ -62,7 +62,6 @@ module.exports = {
   robots:{
     UserAgent: '*',
     Disallow: '/admin',
-    Allow: '/',
   },
   plugins: [
     {
