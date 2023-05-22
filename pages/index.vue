@@ -155,6 +155,7 @@
 <script>
 export default {
     head: () => ({
+        title: "내 집 마련의 시작, 싸방",
         meta: [
             {
                 name: 'title',

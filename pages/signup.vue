@@ -132,10 +132,11 @@ export default {
         };
     },
     head: () => ({
+        title: "회원가입 - 싸방",
         meta: [
             {
                 name: 'title',
-                content: '내 집 마련의 시작, 싸방',
+                content: '회원가입 - 싸방',
             },
             {
                 name: 'description',

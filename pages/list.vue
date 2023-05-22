@@ -160,10 +160,11 @@
 <script>
 export default {
 	head: () => ({
+		title: "싸방 - 매물보기",
 		meta: [
 			{
 				name: 'title',
-				content: '내 집 마련의 시작, 싸방',
+				content: '싸방 - 매물보기',
 			},
 			{
 				name: 'description',
