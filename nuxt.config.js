@@ -30,6 +30,9 @@ module.exports = {
       {
         src: "https://developers.kakao.com/sdk/js/kakao.js",
       },
+      {
+        src: "https://apis.google.com/js/client:platform.js",
+      }
     ]
   },
   modules:[

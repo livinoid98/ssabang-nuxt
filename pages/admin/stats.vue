@@ -1,6 +1,13 @@
 <template>
     <div>
-        <p>admin page</p>
+        <h1>Hello Analytics Reporting API V4</h1>
+
+        <!-- The Sign-in button. This will run `queryReports()` on success. -->
+        <p class="g-signin2" data-onsuccess="queryReports"></p>
+
+        <!-- The API response will be printed here. -->
+        <textarea cols="80" rows="20" id="query-output"></textarea>
+
     </div>
 </template>
 
@@ -11,21 +18,18 @@ import axios from "axios";
 export default{
     data(){
         return{
-            data: []
+
         }
     },
     methods:{
-        loadAnalytics(){
-            
-        },
+
     },
     async fetch(){
-        let response = await axios.get('https://www.googleapis.com/analytics/v3/data/ga?ids=ga%3A290668149&dimensions=ga%3Asource%2Cga%3Akeyword&metrics=ga%3Ausers%2Cga%3Asessions%2Cga%3Aentrances&start-date=300daysAgo&end-date=yesterday');
-        console.log(response);
+
     }
 }
 </script>
-
+    
 <style>
 
 </style>
