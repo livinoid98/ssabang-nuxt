@@ -46,7 +46,10 @@ module.exports = {
     gzip: true,
     path: '/sitemap.xml',
     exclude: [
-      '/admin/**'
+      '/admin/**',
+      '/detail',
+      '/update',
+      '/aptDetail',
     ],
     routes: [
     ],
