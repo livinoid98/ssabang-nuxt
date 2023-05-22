@@ -42,6 +42,7 @@ module.exports = {
   ],
   sitemap: {
     hostname: 'https://ssabang.vercel.app',
+    lastmod: '2023-05-23',
     gzip: true,
     path: '/sitemap.xml',
     exclude: [
@@ -49,6 +50,11 @@ module.exports = {
     ],
     routes: [
     ],
+    defaults: {
+      changefreq: 'daily',
+      priority: 1,
+      lastmod: new Date(),
+    }
   },
   robots:{
     UserAgent: '*',
