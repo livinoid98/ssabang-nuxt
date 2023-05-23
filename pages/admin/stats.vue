@@ -60,7 +60,14 @@
 
 
                 <div class="user-age-wrap">
-                    <h3>사용자 연령별 추이</h3>
+                    <div class="user-age-title">
+
+                        <h3>
+                            <div class="black">SSABANG</div><br/>
+                            사용자 연령별 추이
+                        </h3>
+                    </div>
+                    
                     <svg ref="line"></svg>
                     <svg id="rectGraph"></svg>
 
@@ -80,7 +87,7 @@ import http from "@/assets/api/http.js";
 export default{
     data(){
         return{
-            dataSet : [120, 70, 175, 80, 220, 70, 65],
+            dataSet : [0, 120, 70, 175, 80, 220, 70, 65, 0],
         }
     },
     created(){
@@ -323,15 +330,22 @@ export default{
         .user-age-wrap{
             @include setSize(1200px, 600px);
             @include flex(flex, center, center);
-            flex-direction: column;
-            h3{
-                @include font(20px, 400, #666);
-                text-align:center;
-                margin-bottom:10px;
+            .user-age-title{
+                h3{
+                    @include font(28px, 700, #3366FF);
+                    line-height:17px;
+                    .black{
+                        @include font(28px, 700, #262626);
+                    }
+                }
             }
             #rectGraph{
-                @include setSize(1000px, 600px);
+                height:400px;
+                
             }
+            .bar{
+                    background-color:#BFBFBF;
+                }
         }
         
         
