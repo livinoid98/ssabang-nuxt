@@ -60,7 +60,7 @@
                 </ul>
             </div>
 			<div class="button-wrap">
-				<nuxt-link to="/create" v-if="user.userId === 'ssafy'"><button>글 쓰기</button></nuxt-link>
+				<nuxt-link to="/create" v-if="isManaged == true"><button>글 쓰기</button></nuxt-link>
 			</div>
 		</div>
     </div>
@@ -105,14 +105,10 @@ export default {
         ],
     }),
     computed: {
-		...mapState(["isLogged","user"]),
+		...mapState(["isLogged","user","manager","isManaged"]),
 	},
     methods:{
         async showDetail(no){
-            let response = await http.put(`/api/notice/hitupdate/${no}`, {
-                
-            });
-            console.log(response);
             this.$router.push(`/detail/${no}`);
         },
         async findNotice(){
@@ -245,11 +241,13 @@ export default {
             }
             input{
                 @include setSize(260px, 40px);
-                border-radius:0px;
-                border:2px solid #E7E7E7;
-                box-sizing: border-box;
-                background-color: transparent;
-                padding:10px;
+                width: 260px !important;
+                height:40px !important;
+                border-radius:0px !important;
+                border:2px solid #E7E7E7 !important;
+                box-sizing: border-box !important;
+                background-color: transparent !important;
+                padding:10px !important;
             }
             .findNotice{
                 @include setSize(80px, 40px);

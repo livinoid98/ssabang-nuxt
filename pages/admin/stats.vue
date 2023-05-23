@@ -94,7 +94,6 @@ export default{
         
     },
     mounted() {
-
         let svgHeight = 240;
         let barElements;
 
@@ -189,15 +188,72 @@ export default{
                     return arc(interpolate(t));
                 }
             });
-
     },
     computed:{
-
     },
     methods:{
+        async laodData(){
+            let response = await http.get('/api/user/userList');
+            let users = response.data.userList;
+            console.log(users);
 
+            let maleCnt = 0;
+            let femaleCnt = 0;
+
+            let age10 = 0;
+            let age20 = 0;
+            let age30 = 0;
+            let age40 = 0;
+            let age50 = 0;
+            let age60 = 0;
+            let age70 = 0;
+            let age80 = 0;
+            let age90 = 0;
+
+            for(let i=0; i<users.length; i++){
+                if(users[i].gender == "M"){
+                    maleCnt++;
+                }else if(users[i].gender == "F"){
+                    femaleCnt++;
+                }
+
+                if(users[i].age >=10 && users[i].age < 20){
+                    age10++;
+                }else if(users[i].age >=20 && users[i].age < 30){
+                    age20++;
+                }else if(users[i].age >=30 && users[i].age < 40){
+                    age30++;
+                }else if(users[i].age >=40 && users[i].age < 50){
+                    age40++;
+                }else if(users[i].age >=50 && users[i].age < 60){
+                    age50++;
+                }else if(users[i].age >=60 && users[i].age < 70){
+                    age60++;
+                }else if(users[i].age >=70 && users[i].age < 80){
+                    age70++;
+                }else if(users[i].age >=80 && users[i].age < 90){
+                    age80++;
+                }else if(users[i].age >=90){
+                    age90++;
+                }
+            }
+
+            let ageSet = [];
+            ageSet.push(age10);
+            ageSet.push(age20);
+            ageSet.push(age30);
+            ageSet.push(age40);
+            ageSet.push(age50);
+            ageSet.push(age60);
+            ageSet.push(age70);
+            ageSet.push(age80);
+            ageSet.push(age90);
+
+            this.dataSet = ageSet;
+        }
     },
     async fetch(){
+        laodData();
         
     }
 }
@@ -246,10 +302,10 @@ export default{
                 @include flex(flex, center, center);
                 .user-gender-title{
                     h3{
-                        @include font(28px, 700, #FF414D);
+                        @include font(26px, 700, #FF414D);
                         line-height:17px;
                         .black{
-                            @include font(28px, 700, #262626);
+                            @include font(26px, 700, #262626);
                         }
                     }
                     ul{
@@ -280,9 +336,6 @@ export default{
                 }
 
                
-
-
-
             }
             .add-info-wrap{
                 @include setSize(600px, 600px);
@@ -290,10 +343,10 @@ export default{
                 @include flex(flex, center, center);
                 .add-info-title{
                     h3{
-                        @include font(28px, 700, #FF414D);
+                        @include font(26px, 700, #FF414D);
                         line-height:17px;
                         .black{
-                            @include font(28px, 700, #262626);
+                            @include font(26px, 700, #262626);
                         }
                     }
                     ul{
@@ -344,8 +397,8 @@ export default{
                 
             }
             .bar{
-                    background-color:#BFBFBF;
-                }
+                background-color:#BFBFBF;
+            }
         }
         
         

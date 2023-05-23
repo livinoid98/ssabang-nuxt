@@ -51,7 +51,7 @@
         };
     },
     computed: {
-      ...mapState(["isLogged","user"]),
+      ...mapState(["isLogged","user", "isManaged", "manager"]),
     },  
     methods:{
         async updateNotice(e){
@@ -63,7 +63,7 @@
                 content: this.content,
             },{
               headers:{
-                "jwt-auth-token": this.$store.state.user.authToken,
+                "jwt-auth-token": this.$store.state.manager.authToken,
               },
             })
 
@@ -77,7 +77,12 @@
         }
     },
     async fetch(){
-        let response = await http.get(`/api/notice/detail/${this.$route.params.no}`);
+        let response = await http.get(`/api/notice/updateDetail/${this.$route.params.no}`,{
+          headers:{
+            "jwt-auth-token" : this.$store.state.manager.authToken,
+          }
+        });
+        console.log(response);
         this.userId = response.data.userId;
         this.title = response.data.title;
         this.content = response.data.content;

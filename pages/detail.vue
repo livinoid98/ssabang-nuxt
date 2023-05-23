@@ -19,37 +19,29 @@
                 <div class="comment-wrap">
                     <div class="comment-content-wrap">
                         <ul>
-                            <li>
+                            <li v-for="(comment, index) in comments" :key="index" :comment="comment">
                                 <div class="comment-content">
                                     <div class="comment-profile-img">
                                         <img src="@/assets/img/ssabang-icon.png" alt="">
                                     </div>
                                     <div class="comment-main-wrap">
-                                        <h4>사용자 이름</h4>
-                                        <p>댓글 내용 부분이 들어갑니다. 댓글이에용 ㅎㅎ</p>
+                                        <h4>{{comment.userName}}</h4>
+                                        <p>{{comment.content}}</p>
                                     </div>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="comment-content">
-                                    <div class="comment-profile-img">
-                                        <img src="@/assets/img/ssabang-icon.png" alt="">
-                                    </div>
-                                    <div class="comment-main-wrap">
-                                        <h4>사용자 이름</h4>
-                                        <p>댓글 내용 부분이 들어갑니다. 댓글이에용 ㅎㅎ</p>
+                                    <div class="remove-comment" @click="removeComment(comment.registTime, `${articleNo}`)">
+                                        <img src="@/assets/img/close-icon.png" alt="">
                                     </div>
                                 </div>
                             </li>
                         </ul>
                     </div>
                     <div class="comment-write-wrap">
-                        <textarea name="" id="" cols="30" rows="10"></textarea>
-                        <button>댓글달기</button>
+                        <textarea name="" id="" cols="30" rows="10" class="commentValue"></textarea>
+                        <button @click="addComment(`${articleNo}`)">댓글달기</button>
                     </div>
                 </div>
-                <button @click="updateNotice(`${articleNo}`)" >수정</button>
-                <button @click="deleteNotice(`${articleNo}`)" >삭제</button>
+                <button @click="updateNotice(`${articleNo}`)" v-if="isManaged==true">수정</button>
+                <button @click="deleteNotice(`${articleNo}`)" v-if="isManaged==true">삭제</button>
             </div>
         </div>
     </div>
@@ -57,6 +49,7 @@
 
 <script>
 import http from '@/assets/api/http.js';
+import {mapState} from 'vuex';
 
 export default {
     name: "notice",
@@ -67,13 +60,17 @@ export default {
             title: "",
             content: "",
             registTime: "",
+            comments:[],
         };
     },
+    computed: {
+		...mapState(["isLogged","user","manager","isManaged"]),
+	},
     methods:{
         async deleteNotice(articleNo){
             let stateResponse = await http.get(`/api/notice/updateDetail/${articleNo}`,{
                 headers:{
-                    "jwt-auth-token": this.$store.state.user.authToken,
+                    "jwt-auth-token": this.$store.state.manager.authToken,
                 }
             });
             if(stateResponse.data == ""){
@@ -82,7 +79,7 @@ export default {
             }
             let response = await http.delete(`/api/notice/delete/${articleNo}`,{
                 headers: {
-                    "jwt-auth-token": this.$store.state.user.authToken,
+                    "jwt-auth-token": this.$store.state.manager.authToken,
                 },
             });
             if(response.data.delete === true){
@@ -92,22 +89,67 @@ export default {
         async updateNotice(articleNo){
             let stateResponse = await http.get(`/api/notice/updateDetail/${articleNo}`,{
                 headers:{
-                    "jwt-auth-token": this.$store.state.user.authToken,
+                    "jwt-auth-token": this.$store.state.manager.authToken,
                 }
             });
+            console.log(stateResponse);
             if(stateResponse.data == ""){
                 alert("관리자외에는 게시글을 수정할 수 없습니다.");
                 return;
             }
             this.$router.push(`/update/${articleNo}`);
-        }
+        },
+        async addComment(articleNo){
+            let commentValue = document.querySelector(".commentValue").value;
+
+            let response = await http.post('/api/comment/insert', {
+                userNo: this.$store.state.user.userNo,
+                userName: this.$store.state.user.name,
+                articleNo: articleNo,
+                content: commentValue,
+            },{
+                headers:{
+                    "jwt-auth-token": this.$store.state.user.authToken,
+                }
+            });
+
+            if(response.data.insert == true){
+                this.$router.push('/notice');
+                commentValue = "";
+            }
+        },
+        async removeComment(commentRegistTime, commentArticleNo){
+
+            console.log(commentRegistTime + " " + commentArticleNo);
+            console.log(this.$store.state.user.authToken);
+            let response = await http.delete('/api/comment/delete', {
+                userNo: this.$store.state.user.userNo,
+                registTime: commentRegistTime,
+                articleNo: commentArticleNo,
+            },{
+                headers:{
+                    "jwt-auth-token": this.$store.state.user.authToken,
+                }
+            })
+
+            console.log(response);
+        },
     },
     async fetch(){
         let response = await http.get('/api/notice/detail/' + this.$route.params.no);
-        this.articleNo = response.data.articleNo;
-        this.title = response.data.title;
-        this.content = response.data.content;
-        this.registTime = response.data.registTime;
+        this.articleNo = response.data.detail.articleNo;
+        this.title = response.data.detail.title;
+        this.content = response.data.detail.content;
+        this.registTime = response.data.detail.registTime;
+
+        let commentResponse = await http.get('/api/comment/list/'+this.$route.params.no, {
+            headers:{
+                "jwt-auth-token" : this.$store.state.user.authToken,
+            }
+        })
+
+        this.comments = commentResponse.data.list;
+        console.log(this.comments);
     }
 }
 </script>
@@ -184,7 +226,9 @@ export default {
                         border-bottom: 1px solid #ddd;
                         @include flex(flex, flex-start, center);
                         .comment-content{
+                            width:100%;
                             @include flex(flex, flex-start, center);
+                            position:relative;
                             .comment-profile-img{
                                 @include setSize(48px, 48px);
                                 img{
@@ -200,6 +244,15 @@ export default {
                                 p{
                                     @include font(14px, 400, #ccc);
                                     margin-top:6px;
+                                }
+                            }
+                            .remove-comment{
+                                @include setSize(12px, 12px);
+                                position:absolute;
+                                right:4px;
+                                cursor:pointer;
+                                img{
+                                    width:100%;
                                 }
                             }
                         }

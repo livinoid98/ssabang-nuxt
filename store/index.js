@@ -1,6 +1,10 @@
 export const state = () => {
     return {
         isLogged: false,
+        isManaged: false,
+        manager: {
+
+        },
         user:{
 
         },
@@ -15,6 +19,10 @@ export const mutations = {
     saveLogin(state, payload){
         state.isLogged = true;
         state.user = payload;
+    },
+    saveLoginManager(state, payload){
+        state.isManaged = true;
+        state.manager = payload;
     },
     aptDetail(state, payload){
         state.apt = payload;

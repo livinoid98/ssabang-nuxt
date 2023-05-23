@@ -62,9 +62,11 @@
           content: this.content,
         },{
           headers: {
-            "jwt-auth-token": this.$store.state.user.authToken,
+            "jwt-auth-token": this.$store.state.manager.authToken,
           },
         });
+
+        console.log(response);
 
         if(response.data.insert === true){
           this.$router.push('/notice');
