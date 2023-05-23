@@ -16,6 +16,38 @@
                 <h3>{{title}}</h3>
                 <span>{{registTime}}</span>
                 <p>{{content}}</p>
+                <div class="comment-wrap">
+                    <div class="comment-content-wrap">
+                        <ul>
+                            <li>
+                                <div class="comment-content">
+                                    <div class="comment-profile-img">
+                                        <img src="@/assets/img/ssabang-icon.png" alt="">
+                                    </div>
+                                    <div class="comment-main-wrap">
+                                        <h4>사용자 이름</h4>
+                                        <p>댓글 내용 부분이 들어갑니다. 댓글이에용 ㅎㅎ</p>
+                                    </div>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="comment-content">
+                                    <div class="comment-profile-img">
+                                        <img src="@/assets/img/ssabang-icon.png" alt="">
+                                    </div>
+                                    <div class="comment-main-wrap">
+                                        <h4>사용자 이름</h4>
+                                        <p>댓글 내용 부분이 들어갑니다. 댓글이에용 ㅎㅎ</p>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="comment-write-wrap">
+                        <textarea name="" id="" cols="30" rows="10"></textarea>
+                        <button>댓글달기</button>
+                    </div>
+                </div>
                 <button @click="updateNotice(`${articleNo}`)" >수정</button>
                 <button @click="deleteNotice(`${articleNo}`)" >삭제</button>
             </div>
@@ -139,6 +171,61 @@ export default {
     }
     .notice_body{
         margin-top:10px;
+        .comment-wrap{
+            .comment-content-wrap{
+                ul{
+                    @include setSize(1000px);
+                    li{
+                        height:100px;
+                        box-sizing: border-box;
+                        padding:20px;
+                        margin-top:2px;
+                        border-top: 1px solid #ddd;
+                        border-bottom: 1px solid #ddd;
+                        @include flex(flex, flex-start, center);
+                        .comment-content{
+                            @include flex(flex, flex-start, center);
+                            .comment-profile-img{
+                                @include setSize(48px, 48px);
+                                img{
+                                    @include setSize(100%, 100%);
+                                    border-radius: 50px;
+                                }
+                            }
+                            .comment-main-wrap{
+                                margin-left:10px;
+                                h4{
+                                    @include font(15px, 600, #444);
+                                }
+                                p{
+                                    @include font(14px, 400, #ccc);
+                                    margin-top:6px;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            .comment-write-wrap{
+                @include setSize(1000px);
+                @include flex(flex, center, center);
+                margin-top:6px;
+                textarea{
+                    @include setSize(900px, 80px);
+                    border:1px solid #ddd;
+                }
+                button{
+                    @include setSize(92px, 88px);
+                    margin:0px;
+                    margin-left:8px;
+                    @include font(14px, 400, #8B8C8E);
+                    &:hover{
+                        background-color:#326CF9;
+                        @include font(14px, 400, #fff);
+                    }
+                }
+            }
+        }
     }
     .notice_body span:nth-child(1){
         font-size:12px;
@@ -162,7 +249,7 @@ export default {
         top:10px;
         margin-left:6px;
     }
-    .notice_body p{
+    .notice_body > p{
         height:400px;
         margin-top:40px;
         overflow-y: scroll;
@@ -189,36 +276,5 @@ export default {
     }
     .notice_body button:nth-child(6){
         margin-left:4px;
-    }
-    .comment_list{
-        width:960px;
-        padding:20px;
-        margin-top:10px;
-        background-color:#eee;
-        font-size:12px;
-        font-weight:400;
-        color:#333;
-        position:relative;
-    }
-    .comment_list button{
-        border:none;
-        position:absolute;
-        top:10px;
-        left:958px;
-    }
-    .comment_write input{
-        width:920px;
-        height:120px;
-        margin-top:10px;
-        border:1px solid #efefef;
-    }
-    .comment_write .btn{
-        width:60px;
-        height:32px;
-        cursor:pointer;
-        background-color:#ff5656;
-        color:#fff;
-        font-size:14px;
-        font-weight:900;
     }
 </style>

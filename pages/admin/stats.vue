@@ -12,13 +12,47 @@
 
                 <div class="separate-wrap">
                     <div class="user-gender-wrap">
-                        <h3>사용자 성별 추이</h3>
+                        <div class="user-gender-title">
+                            <h3>
+                                <div class="black">SSABANG</div><br/>
+                                사용자 성별 추이
+                            </h3>
+                            <ul>
+                                <li>
+                                    <div class="square"></div>
+                                    <span>남성</span>
+                                </li>
+                                <li>
+                                    <div class="square"></div>
+                                    <span>여성</span>
+                                </li>
+                                <li>
+                                    <div class="square"></div>
+                                    <span>응답없음</span>
+                                </li>
+                            </ul>
+                        </div>
                         
                         <div class="graph"></div>
 
                     </div>
-                    <div class="article-chart-wrap">
-                        <h3>회원가입 추가정보 응답률</h3>
+                    <div class="add-info-wrap">
+                        <div class="add-info-title">
+                            <h3>
+                                <div class="black">SSABANG</div><br/>
+                                추가정보 제공량
+                            </h3>
+                            <ul>
+                                <li>
+                                    <div class="square"></div>
+                                    <span>무응답</span>
+                                </li>
+                                <li>
+                                    <div class="square"></div>
+                                    <span>정보제공</span>
+                                </li>
+                            </ul>
+                        </div>
 
                         <div class="graph2"></div>
                     </div>
@@ -28,7 +62,7 @@
                 <div class="user-age-wrap">
                     <h3>사용자 연령별 추이</h3>
                     <svg ref="line"></svg>
-                    <svg id="chart"></svg>
+                    <svg id="rectGraph"></svg>
 
                     
                 
@@ -46,26 +80,38 @@ import http from "@/assets/api/http.js";
 export default{
     data(){
         return{
-            data: [10, 90, 72, 75, 25, 10, 92, 10],
+            dataSet : [120, 70, 175, 80, 220, 70, 65],
         }
     },
     created(){
         
     },
     mounted() {
-        const svg = d3
-            .select(this.$refs.line)
-            .attr("width", 1200)
-            .attr("height", 400);
 
-        svg
-            .append("path")
-            .datum(this.data)
-            .attr("fill", "none")
-            .attr("stroke", "#D2673F")
-            .attr("stroke-width", 2)
-            .attr("d", this.line);
+        let svgHeight = 240;
+        let barElements;
 
+        barElements = d3.select("#rectGraph")
+            .selectAll("rect")
+            .data(this.dataSet)
+
+        barElements.enter()
+            .append("rect")
+            .attr("class", "bar")
+            .attr("height", (d,i) => {
+                return d;
+            })
+            .attr("width", 20)
+            .attr("x", (d,i) => {
+                return i*25;
+            })
+            .attr("y", (d,i) => {
+                return svgHeight - d;
+            })
+            .selectAll("rect")
+            .data(this.dataSet)
+            .enter()
+            .append("rect")
 
         var w = 400, h = 400;
         d3.select(".graph")
@@ -78,7 +124,7 @@ export default{
         var graphData = [50, 30, 20];
         var pie = d3.pie();
         var arc = d3.arc().innerRadius(0).outerRadius(100);
-        var colors = d3.scaleOrdinal(d3.schemeCategory10);
+        var colors = ["#FF414D", "#FC646E", "#FA888F"];
         
         var oneGraph = graphWrap.selectAll("path").data(pie(graphData));
         oneGraph.enter()
@@ -86,7 +132,7 @@ export default{
             .attr("class", "pie")
             .attr("transform", "translate("+(w/2)+","+(h/2)+")")
             .style("fill", function(d, i) {
-                return colors(graphData[i]);})
+                return colors[i];})
             .transition()
             .duration(1000)
             .delay(function(d, i) {
@@ -110,10 +156,10 @@ export default{
             .attr("id", "graphWrap2");
         var graphWrap = d3.select("#graphWrap2");
         
-        var graphData = [50, 30, 20];
+        var graphData = [65, 35];
         var pie = d3.pie();
         var arc = d3.arc().innerRadius(0).outerRadius(100);
-        var colors = d3.scaleOrdinal(d3.schemeCategory10);
+        var colors = ["#FF414D", "#FC646E", "#FA888F"];
         
         var oneGraph = graphWrap.selectAll("path").data(pie(graphData));
         oneGraph.enter()
@@ -121,7 +167,7 @@ export default{
             .attr("class", "pie")
             .attr("transform", "translate("+(w/2)+","+(h/2)+")")
             .style("fill", function(d, i) {
-                return colors(graphData[i]);})
+                return colors[i];})
             .transition()
             .duration(1000)
             .delay(function(d, i) {
@@ -139,21 +185,7 @@ export default{
 
     },
     computed:{
-        line() {
-            return d3
-                .line()
-                .x((d, i) => this.xScale(i))
-                .y((d) => this.ySclae(d));
-        },
-        xScale() {
-            return d3
-                .scaleLinear()
-                .range([60, 1140])
-                .domain(d3.extent(this.data, (d, i) => i));
-        },
-        ySclae() {
-            return d3.scaleLinear().range([280, 20]).domain([0, 100]);
-        },
+
     },
     methods:{
 
@@ -204,9 +236,40 @@ export default{
             @include flex(flex, center, center);
             .user-gender-wrap{
                 @include setSize(600px, 600px);
-                h3{
-                    @include font(18px, 400, #666);
-                    text-align:center;
+                @include flex(flex, center, center);
+                .user-gender-title{
+                    h3{
+                        @include font(28px, 700, #FF414D);
+                        line-height:17px;
+                        .black{
+                            @include font(28px, 700, #262626);
+                        }
+                    }
+                    ul{
+                        margin-top:48px;
+                        li{
+                            @include flex(flex, flex-start, center);
+                            margin-top:8px;
+                            .square{
+                                @include setSize(30px, 30px);
+                                border-radius:8px;
+                            }
+                            &:nth-child(1){
+                                .square{
+                                    background-color: #FF414D;
+                                }
+                            }
+                            &:nth-child(2){
+                                .square{background-color: #FC646E;}
+                            }
+                            &:nth-child(3){
+                                .square{background-color: #FA888F;}
+                            }
+                            span{
+                                margin-left:6px;
+                            }
+                        }
+                    }
                 }
 
                
@@ -214,11 +277,43 @@ export default{
 
 
             }
-            .article-chart-wrap{
+            .add-info-wrap{
                 @include setSize(600px, 600px);
-                h3{
-                    @include font(18px, 400, #666);
-                    text-align:center;
+                @include setSize(600px, 600px);
+                @include flex(flex, center, center);
+                .add-info-title{
+                    h3{
+                        @include font(28px, 700, #FF414D);
+                        line-height:17px;
+                        .black{
+                            @include font(28px, 700, #262626);
+                        }
+                    }
+                    ul{
+                        margin-top:48px;
+                        li{
+                            @include flex(flex, flex-start, center);
+                            margin-top:8px;
+                            .square{
+                                @include setSize(30px, 30px);
+                                border-radius:8px;
+                            }
+                            &:nth-child(1){
+                                .square{
+                                    background-color: #FF414D;
+                                }
+                            }
+                            &:nth-child(2){
+                                .square{background-color: #FC646E;}
+                            }
+                            &:nth-child(3){
+                                .square{background-color: #FA888F;}
+                            }
+                            span{
+                                margin-left:6px;
+                            }
+                        }
+                    }
                 }
 
             }
@@ -233,6 +328,9 @@ export default{
                 @include font(20px, 400, #666);
                 text-align:center;
                 margin-bottom:10px;
+            }
+            #rectGraph{
+                @include setSize(1000px, 600px);
             }
         }
         
