@@ -88,117 +88,122 @@ export default{
     data(){
         return{
             dataSet : [0, 120, 70, 175, 80, 220, 70, 65, 0],
+            maleCnt : 0,
+            femaleCnt : 0,
+            noCnt: 0,
+            totalCnt: 0,
         }
     },
     created(){
         
     },
     mounted() {
-        let svgHeight = 240;
-        let barElements;
+        // let svgHeight = 240;
+        // let barElements;
 
-        barElements = d3.select("#rectGraph")
-            .selectAll("rect")
-            .data(this.dataSet)
+        // barElements = d3.select("#rectGraph")
+        //     .selectAll("rect")
+        //     .data(this.dataSet)
 
-        barElements.enter()
-            .append("rect")
-            .attr("class", "bar")
-            .attr("height", (d,i) => {
-                return d;
-            })
-            .attr("width", 20)
-            .attr("x", (d,i) => {
-                return i*25;
-            })
-            .attr("y", (d,i) => {
-                return svgHeight - d;
-            })
-            .selectAll("rect")
-            .data(this.dataSet)
-            .enter()
-            .append("rect")
+        // barElements.enter()
+        //     .append("rect")
+        //     .attr("class", "bar")
+        //     .attr("height", (d,i) => {
+        //         return d;
+        //     })
+        //     .attr("width", 20)
+        //     .attr("x", (d,i) => {
+        //         return i*25;
+        //     })
+        //     .attr("y", (d,i) => {
+        //         return svgHeight - d;
+        //     })
+        //     .selectAll("rect")
+        //     .data(this.dataSet)
+        //     .enter()
+        //     .append("rect")
 
-        var w = 400, h = 400;
-        d3.select(".graph")
-            .append("svg")
-            .attr("width", w)
-            .attr("height", h)
-            .attr("id", "graphWrap");
-        var graphWrap = d3.select("#graphWrap");
+        // var w = 400, h = 400;
+        // d3.select(".graph")
+        //     .append("svg")
+        //     .attr("width", w)
+        //     .attr("height", h)
+        //     .attr("id", "graphWrap");
+        // var graphWrap = d3.select("#graphWrap");
         
-        var graphData = [50, 30, 20];
-        var pie = d3.pie();
-        var arc = d3.arc().innerRadius(0).outerRadius(100);
-        var colors = ["#FF414D", "#FC646E", "#FA888F"];
+        // var graphData = [50, 30, 20];
+        // var pie = d3.pie();
+        // var arc = d3.arc().innerRadius(0).outerRadius(100);
+        // var colors = ["#FF414D", "#FC646E", "#FA888F"];
         
-        var oneGraph = graphWrap.selectAll("path").data(pie(graphData));
-        oneGraph.enter()
-            .append("path")
-            .attr("class", "pie")
-            .attr("transform", "translate("+(w/2)+","+(h/2)+")")
-            .style("fill", function(d, i) {
-                return colors[i];})
-            .transition()
-            .duration(1000)
-            .delay(function(d, i) {
-                return i * 1000;
-            })
-            .attrTween("d", function(d, i) {
-                var interpolate = d3.interpolate(
-                    {startAngle : d.startAngle, endAngle : d.startAngle},
-                    {startAngle : d.startAngle, endAngle : d.endAngle}
-                );
-                return function(t){
-                    return arc(interpolate(t));
-                }
-            });
+        // var oneGraph = graphWrap.selectAll("path").data(pie(graphData));
+        // oneGraph.enter()
+        //     .append("path")
+        //     .attr("class", "pie")
+        //     .attr("transform", "translate("+(w/2)+","+(h/2)+")")
+        //     .style("fill", function(d, i) {
+        //         return colors[i];})
+        //     .transition()
+        //     .duration(1000)
+        //     .delay(function(d, i) {
+        //         return i * 1000;
+        //     })
+        //     .attrTween("d", function(d, i) {
+        //         var interpolate = d3.interpolate(
+        //             {startAngle : d.startAngle, endAngle : d.startAngle},
+        //             {startAngle : d.startAngle, endAngle : d.endAngle}
+        //         );
+        //         return function(t){
+        //             return arc(interpolate(t));
+        //         }
+        //     });
 
-        var w = 400, h = 400;
-        d3.select(".graph2")
-            .append("svg")
-            .attr("width", w)
-            .attr("height", h)
-            .attr("id", "graphWrap2");
-        var graphWrap = d3.select("#graphWrap2");
+        // var w = 400, h = 400;
+        // d3.select(".graph2")
+        //     .append("svg")
+        //     .attr("width", w)
+        //     .attr("height", h)
+        //     .attr("id", "graphWrap2");
+        // var graphWrap = d3.select("#graphWrap2");
         
-        var graphData = [65, 35];
-        var pie = d3.pie();
-        var arc = d3.arc().innerRadius(0).outerRadius(100);
-        var colors = ["#FF414D", "#FC646E", "#FA888F"];
+        // var graphData = [65, 35];
+        // var pie = d3.pie();
+        // var arc = d3.arc().innerRadius(0).outerRadius(100);
+        // var colors = ["#FF414D", "#FC646E", "#FA888F"];
         
-        var oneGraph = graphWrap.selectAll("path").data(pie(graphData));
-        oneGraph.enter()
-            .append("path")
-            .attr("class", "pie")
-            .attr("transform", "translate("+(w/2)+","+(h/2)+")")
-            .style("fill", function(d, i) {
-                return colors[i];})
-            .transition()
-            .duration(1000)
-            .delay(function(d, i) {
-                return i * 1000;
-            })
-            .attrTween("d", function(d, i) {
-                var interpolate = d3.interpolate(
-                    {startAngle : d.startAngle, endAngle : d.startAngle},
-                    {startAngle : d.startAngle, endAngle : d.endAngle}
-                );
-                return function(t){
-                    return arc(interpolate(t));
-                }
-            });
+        // var oneGraph = graphWrap.selectAll("path").data(pie(graphData));
+        // oneGraph.enter()
+        //     .append("path")
+        //     .attr("class", "pie")
+        //     .attr("transform", "translate("+(w/2)+","+(h/2)+")")
+        //     .style("fill", function(d, i) {
+        //         return colors[i];})
+        //     .transition()
+        //     .duration(1000)
+        //     .delay(function(d, i) {
+        //         return i * 1000;
+        //     })
+        //     .attrTween("d", function(d, i) {
+        //         var interpolate = d3.interpolate(
+        //             {startAngle : d.startAngle, endAngle : d.startAngle},
+        //             {startAngle : d.startAngle, endAngle : d.endAngle}
+        //         );
+        //         return function(t){
+        //             return arc(interpolate(t));
+        //         }
+        //     });
     },
     computed:{
     },
     methods:{
-        async laodData(){
-            let response = await http.get('/api/user/userList');
+    },
+    async fetch(){
+        let response = await http.get('/api/user/userList');
             let users = response.data.userList;
-            console.log(users);
 
             let maleCnt = 0;
             let femaleCnt = 0;
+            let noCnt = 0;
 
             let age10 = 0;
             let age20 = 0;
@@ -215,6 +220,8 @@ export default{
                     maleCnt++;
                 }else if(users[i].gender == "F"){
                     femaleCnt++;
+                }else{
+                    noCnt++;
                 }
 
                 if(users[i].age >=10 && users[i].age < 20){
@@ -239,22 +246,125 @@ export default{
             }
 
             let ageSet = [];
-            ageSet.push(age10);
-            ageSet.push(age20);
-            ageSet.push(age30);
-            ageSet.push(age40);
-            ageSet.push(age50);
-            ageSet.push(age60);
-            ageSet.push(age70);
-            ageSet.push(age80);
-            ageSet.push(age90);
+            ageSet.push(age10*10);
+            ageSet.push(age20*10);
+            ageSet.push(age30*10);
+            ageSet.push(age40*10);
+            ageSet.push(age50*10);
+            ageSet.push(age60*10);
+            ageSet.push(age70*10);
+            ageSet.push(age80*10);
+            ageSet.push(age90*10);
 
             this.dataSet = ageSet;
-        }
-    },
-    async fetch(){
-        laodData();
         
+            let svgHeight = 240;
+            let barElements;
+
+            barElements = d3.select("#rectGraph")
+                .selectAll("rect")
+                .data(this.dataSet)
+
+            barElements.enter()
+                .append("rect")
+                .attr("class", "bar")
+                .attr("height", (d,i) => {
+                    return d;
+                })
+                .attr("width", 20)
+                .attr("x", (d,i) => {
+                    return i*35;
+                })
+                .attr("y", (d,i) => {
+                    return svgHeight - d;
+                })
+                .selectAll("rect")
+                .data(this.dataSet)
+                .enter()
+                .append("rect")
+
+
+
+
+            // 원형그래프
+
+            this.maleCnt = maleCnt;
+            this.femaleCnt = femaleCnt;
+            this.noCnt = noCnt;
+            this.totalCnt = maleCnt + femaleCnt + noCnt;
+
+            console.log("f : " + this.femaleCnt + "m :" + this.maleCnt + "total : " + this.totalCnt);
+
+            var w = 400, h = 400;
+            d3.select(".graph")
+                .append("svg")
+                .attr("width", w)
+                .attr("height", h)
+                .attr("id", "graphWrap");
+            var graphWrap = d3.select("#graphWrap");
+            
+            var graphData = [(this.maleCnt/this.totalCnt)*100, (this.femaleCnt/this.totalCnt)*100, (this.noCnt/this.totalCnt)*100];
+            var pie = d3.pie();
+            var arc = d3.arc().innerRadius(0).outerRadius(100);
+            var colors = ["#FF414D", "#FC646E", "#FA888F"];
+            
+            var oneGraph = graphWrap.selectAll("path").data(pie(graphData));
+            oneGraph.enter()
+                .append("path")
+                .attr("class", "pie")
+                .attr("transform", "translate("+(w/2)+","+(h/2)+")")
+                .style("fill", function(d, i) {
+                    return colors[i];})
+                .transition()
+                .duration(1000)
+                .delay(function(d, i) {
+                    return i * 1000;
+                })
+                .attrTween("d", function(d, i) {
+                    var interpolate = d3.interpolate(
+                        {startAngle : d.startAngle, endAngle : d.startAngle},
+                        {startAngle : d.startAngle, endAngle : d.endAngle}
+                    );
+                    return function(t){
+                        return arc(interpolate(t));
+                    }
+                });
+
+            var w = 400, h = 400;
+            d3.select(".graph2")
+                .append("svg")
+                .attr("width", w)
+                .attr("height", h)
+                .attr("id", "graphWrap2");
+            var graphWrap = d3.select("#graphWrap2");
+            
+            var graphData = [((this.totalCnt-this.noCnt)/this.totalCnt)*100, (this.noCnt/this.totalCnt)*100];
+            var pie = d3.pie();
+            var arc = d3.arc().innerRadius(0).outerRadius(100);
+            var colors = ["#FF414D", "#FC646E", "#FA888F"];
+            
+            var oneGraph = graphWrap.selectAll("path").data(pie(graphData));
+            oneGraph.enter()
+                .append("path")
+                .attr("class", "pie")
+                .attr("transform", "translate("+(w/2)+","+(h/2)+")")
+                .style("fill", function(d, i) {
+                    return colors[i];})
+                .transition()
+                .duration(1000)
+                .delay(function(d, i) {
+                    return i * 1000;
+                })
+                .attrTween("d", function(d, i) {
+                    var interpolate = d3.interpolate(
+                        {startAngle : d.startAngle, endAngle : d.startAngle},
+                        {startAngle : d.startAngle, endAngle : d.endAngle}
+                    );
+                    return function(t){
+                        return arc(interpolate(t));
+                    }
+                });
+
     }
 }
 </script>
@@ -397,7 +507,11 @@ export default{
                 
             }
             .bar{
-                background-color:#BFBFBF;
+                fill:#BFBFBF;
+                cursor:pointer;
+                &:hover{
+                    fill:#3366FF;
+                }
             }
         }
         

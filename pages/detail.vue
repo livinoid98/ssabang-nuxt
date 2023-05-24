@@ -28,7 +28,7 @@
                                         <h4>{{comment.userName}}</h4>
                                         <p>{{comment.content}}</p>
                                     </div>
-                                    <div class="remove-comment" @click="removeComment(comment.registTime, `${articleNo}`)">
+                                    <div class="remove-comment" @click="removeComment(`${comment.commentNo}`)">
                                         <img src="@/assets/img/close-icon.png" alt="">
                                     </div>
                                 </div>
@@ -101,7 +101,6 @@ export default {
         },
         async addComment(articleNo){
             let commentValue = document.querySelector(".commentValue").value;
-
             let response = await http.post('/api/comment/insert', {
                 userNo: this.$store.state.user.userNo,
                 userName: this.$store.state.user.name,
@@ -118,21 +117,17 @@ export default {
                 commentValue = "";
             }
         },
-        async removeComment(commentRegistTime, commentArticleNo){
-
-            console.log(commentRegistTime + " " + commentArticleNo);
-            console.log(this.$store.state.user.authToken);
-            let response = await http.delete('/api/comment/delete', {
-                userNo: this.$store.state.user.userNo,
-                registTime: commentRegistTime,
-                articleNo: commentArticleNo,
-            },{
+        async removeComment(commentNo){
+            console.log(commentNo);
+            let response = await http.delete(`/api/comment/delete/${commentNo}`, {
                 headers:{
                     "jwt-auth-token": this.$store.state.user.authToken,
                 }
-            })
+            });
 
-            console.log(response);
+            if(response.data.delete == true){
+                this.$router.push('/notice');
+            }
         },
     },
     async fetch(){

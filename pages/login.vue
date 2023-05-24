@@ -67,6 +67,20 @@ export default {
     methods:{
         async login(e){
             e.preventDefault();
+
+            const id = document.querySelector("input[name='id']").value;
+            const password = document.querySelector("input[name='password']").value;
+
+            if(id == ""){
+                alert("아이디를 입력해주세요.");
+                return;
+            }
+
+            if(password == ""){
+                alert("패스워드를 입력해주세요.");
+                return;
+            }
+            
             await http.post('/api/user/login', {
                 userId: this.id,
                 userPw: this.password,
@@ -211,7 +225,7 @@ export default {
           button{
               width:257px;
               height:40px;
-              margin-top:70px;
+              margin-top:86px;
               border:1px solid #c4c4c4;
               background-color:#999999;
               font-size:15px;
