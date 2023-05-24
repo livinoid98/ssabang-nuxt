@@ -69,10 +69,10 @@
                         <tr>
 							<td>성별</td>
 							<td>
-                                <select>
-                                    <option value="no">선택안함</option>
-                                    <option value="male">남</option>
-                                    <option value="female">여</option>
+                                <select class="gender">
+                                    <option value="">선택안함</option>
+                                    <option value="M">남</option>
+                                    <option value="F">여</option>
                                 </select>
                             </td>
 						</tr>
@@ -126,15 +126,19 @@
 				</form>
 			</div>
 		</div>
+        <Modal/>
     </div>
 </template>
 
 <script>
 import http from "@/assets/api/http.js";
+import Modal from "@/components/Modal";
 
 export default {
     name: "signup",
-    components:{},
+    components:{
+        Modal,
+    },
     data() {
         return {
             articles: [],
@@ -148,12 +152,15 @@ export default {
             const password = document.querySelector("input[name='password']").value;
             const passwordCheck = document.querySelector("input[name='passwordCheck']").value;
             const name = document.querySelector("input[name='name']").value;
+            const gender = document.querySelector(".gender")
+            let genderValue = gender.options[gender.selectedIndex].value;
             const phone = document.querySelector("input[name='phone']").value;
             const email = document.querySelector("input[name='email']").value;
             const sido = document.querySelector(".sido");
             let sidoValue = sido.options[sido.selectedIndex].value;
             const gugun = document.querySelector(".gugun");
             let gugunValue = gugun.options[gugun.selectedIndex].value;
+            const check = document.querySelector("input[type='checkbox']");
 
             if(id == ""){
                 alert("아이디를 작성해주세요.");
@@ -197,19 +204,31 @@ export default {
                 return;
             }
 
+            let loginCheck = await http.get(`/api/user/check/${id}`);
+
+            if(loginCheck.data.canSignUp == 'no '){
+                alert("중복 아이디입니다. 다른 아이디로 가입해주세요.");
+                return;
+            }
+
+            console.log(loginCheck);
+
             let response = await http.post('/api/user/signup', {
-                name : userName,
+                name : name,
                 userId : id,
                 userPw : password,
                 phone : phone,
                 email : email,
-                address : address,
                 gender : genderValue,
-                address_city: sidoValue,
-                address_gu: gugunValue,
+                addressCity: sidoValue,
+                addressGu: gugunValue,
             });
 
-            console.log(response);
+            if(response.data.signup == true){
+                this.$router.push('/login');
+            }else{
+                this.$router.push('/signup');
+            }
 
         },
 
