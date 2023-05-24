@@ -33,7 +33,7 @@
 						</tr>
 						<tr>
 							<td>이름</td>
-							<td><input type="text" name="userName" required/></td>
+							<td><input type="text" name="name" required/></td>
 						</tr>
                     </table>
 
@@ -55,12 +55,21 @@
 						</tr>
                         <tr>
 							<td>주소</td>
-							<td><input type="text" name="address"/></td>
+							<td class="address-content">
+                                <select class="sido" @change="selectSi">
+                                    <option>광역시</option>
+                                    <option v-for="(si,index) in si" :key="index" :si="si" :value="si.dongCode">{{ si.sidoName }}</option>
+                                </select>
+                                <select class="gugun">
+                                    <option>구/군</option>
+                                    <option v-for="(gugun,index) in gugun" :key="index" :gugun="gugun" :value="gugun.dongCode">{{ gugun.gugunName }}</option>
+                                </select>
+                            </td>
 						</tr>
                         <tr>
 							<td>성별</td>
 							<td>
-                                <select class="gender">
+                                <select>
                                     <option value="no">선택안함</option>
                                     <option value="male">남</option>
                                     <option value="female">여</option>
@@ -121,7 +130,7 @@
 </template>
 
 <script>
-import http from '@/assets/api/http.js';
+import http from "@/assets/api/http.js";
 
 export default {
     name: "signup",
@@ -129,45 +138,30 @@ export default {
     data() {
         return {
             articles: [],
+            si: [],
+            gugun: [],
         };
     },
-    head: () => ({
-        title: "회원가입 - 싸방",
-        meta: [
-            {
-                name: 'title',
-                content: '회원가입 - 싸방',
-            },
-            {
-                name: 'description',
-                content: '싸방은 전문 부동산 중개 웹사이트로, 최상의 부동산 거래를 위한 서비스를 제공합니다. 저희 플랫폼은 매물의 노출과 홍보를 위한 다양한 마케팅 도구와 기능을 제공합니다. 우리의 목표는 고객에게 안전하고 신뢰할 수 있는 부동산 거래 환경을 제공하는 것입니다. 저희 웹사이트는 다양한 부동산 매물 정보를 제공하며, 구매자와 판매자가 원활하게 소통하고 거래를 진행할 수 있는 플랫폼을 제공합니다.',
-            },
-            {
-                name: 'keywords',
-                content: '싸방, 부동산 중개 플랫폼, 부동산, 매매, 시세, 부동산 시세, 회원가입, 신규유저'
-            }
-        ],
-    }),
     methods:{
         async submitSignup(){
             const id = document.querySelector("input[name='id']").value;
             const password = document.querySelector("input[name='password']").value;
             const passwordCheck = document.querySelector("input[name='passwordCheck']").value;
-            const userName = document.querySelector("input[name='userName']").value;
+            const name = document.querySelector("input[name='name']").value;
             const phone = document.querySelector("input[name='phone']").value;
             const email = document.querySelector("input[name='email']").value;
-            const address = document.querySelector("input[name='address']").value;
-            const gender = document.querySelector(".gender");
-            let genderValue = gender.options[gender.selectedIndex].value;
-            const check = document.querySelector("input[name='agree']");
+            const sido = document.querySelector(".sido");
+            let sidoValue = sido.options[sido.selectedIndex].value;
+            const gugun = document.querySelector(".gugun");
+            let gugunValue = gugun.options[gugun.selectedIndex].value;
 
             if(id == ""){
-                alert("이름을 입력해주세요.");
+                alert("아이디를 작성해주세요.");
                 return;
             }
 
             if(password == ""){
-                alert("비밀번호를 입력해주세요.");
+                alert("비밀번호를 작성해주세요.")
                 return;
             }
 
@@ -176,10 +170,10 @@ export default {
                 return;
             }
 
-            if(userName == ""){
-                alert("이름을 입력해주세요.");
-                return;
+            if(name == ""){
+                alert("이름을 작성해주세요.");
             }
+
 
             const phoneRegex1 = /\d{3}-\d{4}-\d{4}/;
             const phoneRegex2 = /\d{3}\d{4}\d{4}/;
@@ -211,15 +205,28 @@ export default {
                 email : email,
                 address : address,
                 gender : genderValue,
+                address_city: sidoValue,
+                address_gu: gugunValue,
             });
 
             console.log(response);
 
+        },
 
-        }
+        async selectSi(){
+            const sido = document.querySelector(".sido");
+            let value = sido.options[sido.selectedIndex].value;
+            let responseData = value.slice(0,2);
+            let response = await http.get(`/api/map/list/juso/gugun/${responseData}`);
+            this.gugun = response.data;
+        },
+
+        
     },
     async fetch(){
-        
+        let response = await http.get('/api/map/list/juso');
+        console.log(response);
+        this.si = response.data;
     }
 }
 
@@ -377,7 +384,13 @@ export default {
                             border:1px solid #d9d9d9;
                         }
                     }
+                    .address-content{
+                        input{
+                            width:130px;
+                        }
+                    }
                 }
+                
             }
             h4{
                 font-size:12px;
@@ -433,6 +446,21 @@ export default {
                     border:none;
                     background-color:#3c3c3c;
                     cursor:pointer;
+                }
+            }
+            .sign_up_title{
+                > h4{
+                    font-size:18px;
+                    font-weight:700;
+                    color:#535353;
+                    display:inline-block;
+                }
+                p{
+                    font-size:12px;
+                    font-weight:300;
+                    color:#898989;
+                    display:inline-block;
+                    margin-left:8px;
                 }
             }
         }
