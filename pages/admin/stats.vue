@@ -260,10 +260,13 @@ export default{
         
             let svgHeight = 240;
             let barElements;
+            const textLabel = ["10대", "20대", "30대", "40대", "50대", "60대", "70대", "80대", "90대"];
 
             barElements = d3.select("#rectGraph")
                 .selectAll("rect")
-                .data(this.dataSet)
+                .data(this.dataSet);
+
+            
 
             barElements.enter()
                 .append("rect")
@@ -273,7 +276,7 @@ export default{
                 })
                 .attr("width", 20)
                 .attr("x", (d,i) => {
-                    return i*35;
+                    return i*35+5;
                 })
                 .attr("y", (d,i) => {
                     return svgHeight - d;
@@ -282,6 +285,28 @@ export default{
                 .data(this.dataSet)
                 .enter()
                 .append("rect")
+
+
+            barElements.enter()
+                .append("text")
+                .text((d) => {
+                    return d;
+                })
+                .attr("width", 20)
+                .attr("text-anchor", "middle")
+                .attr("x", (d,i) => {
+                    return i*35+15;
+                })
+                .attr("y", svgHeight + 20)
+                .attr("font-family", "Noto-Sans")
+                .attr("font-weight", "400")
+                .attr("font-size", "12px")
+                .attr("fill", "#BFBFBF")
+                .text((d,i) => {
+                    return textLabel[i];
+                })
+
+            
 
 
 
@@ -407,8 +432,9 @@ export default{
 
         .separate-wrap{
             @include flex(flex, center, center);
+            margin-top:120px;
             .user-gender-wrap{
-                @include setSize(600px, 600px);
+                @include setSize(600px, null);
                 @include flex(flex, center, center);
                 .user-gender-title{
                     h3{
@@ -448,8 +474,7 @@ export default{
                
             }
             .add-info-wrap{
-                @include setSize(600px, 600px);
-                @include setSize(600px, 600px);
+                @include setSize(600px, null);
                 @include flex(flex, center, center);
                 .add-info-title{
                     h3{
@@ -491,8 +516,10 @@ export default{
 
 
         .user-age-wrap{
-            @include setSize(1200px, 600px);
+            @include setSize(1200px, null);
             @include flex(flex, center, center);
+            margin-top:40px;
+            margin-bottom:120px;
             .user-age-title{
                 h3{
                     @include font(28px, 700, #3366FF);
@@ -503,8 +530,8 @@ export default{
                 }
             }
             #rectGraph{
-                height:400px;
-                
+                width:500px;
+                height:400px;  
             }
             .bar{
                 fill:#BFBFBF;

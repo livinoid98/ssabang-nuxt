@@ -11,10 +11,10 @@
                     </div>
                 </div>
                 <div class="modal-content">
-                    <p>메시지 내용</p>
+                    <p></p>
                 </div>
                 <div class="modal-button-wrap">
-                    <button>확인</button>
+                    <button class="close-modal">확인</button>
                 </div>
             </div>
         </div>
@@ -31,7 +31,8 @@ export default {
         };
     },
     created() {},
-    methods: {},
+    methods: {
+    },
 };
 </script>
 

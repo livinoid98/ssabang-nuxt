@@ -126,7 +126,6 @@
 				</form>
 			</div>
 		</div>
-        <Modal/>
     </div>
 </template>
 
@@ -144,6 +143,7 @@ export default {
             articles: [],
             si: [],
             gugun: [],
+            alarmMsg: "",
         };
     },
     methods:{
@@ -246,6 +246,9 @@ export default {
         let response = await http.get('/api/map/list/juso');
         console.log(response);
         this.si = response.data;
+
+        const modalBack = document.querySelector(".modal-back");
+        modalBack.style.display = "none";
     }
 }
 
