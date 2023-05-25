@@ -45,11 +45,11 @@
                             <ul>
                                 <li>
                                     <div class="square"></div>
-                                    <span>무응답</span>
+                                    <span>정보제공</span>
                                 </li>
                                 <li>
                                     <div class="square"></div>
-                                    <span>정보제공</span>
+                                    <span>무응답</span>
                                 </li>
                             </ul>
                         </div>
