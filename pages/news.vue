@@ -9,6 +9,19 @@
 			</div>
 			<div class="location-graph">
 				<p>공지사항 > 뉴스/소개</p>
+                <div class="separator">
+
+                    <select class="sido" @change="selectSi">
+                        <option>광역시</option>
+                        <option v-for="(si,index) in si" :key="index" :si="si" :value="si.dongCode">{{ si.sidoName }}</option>
+                    </select>
+                    <select class="gugun">
+                        <option>구/군</option>
+                        <option v-for="(gugun,index) in gugun" :key="index" :gugun="gugun" :value="gugun.dongCode">{{ gugun.gugunName }}</option>
+                    </select>
+
+                    <input type="submit" class="find" value="검색" @click.prevent="findNews">
+                </div>
 			</div>
       <div class="bg">
         <div class="article-contents">
@@ -47,6 +60,7 @@
 
 <script>
 import http from "@/assets/api/http.js";
+import {mapMutations, mapState} from 'vuex';
 
 export default {
     name: "news",
@@ -54,6 +68,8 @@ export default {
     data() {
         return {
             news: [],
+            si: [],
+            gugun: [],
         };
     },
     head: () => ({
@@ -73,15 +89,47 @@ export default {
             }
         ],
     }),
+    computed:{
+        ...mapState(["user"]),
+    },
     methods:{
-      linkNews(link){
-        window.location.href = link;
-      }
+        linkNews(link){
+            window.location.href = link;
+        },
+        async selectSi(){
+            const sido = document.querySelector(".sido");
+            let value = sido.options[sido.selectedIndex].value;
+            let responseData = value.slice(0,2);
+            let response = await http.get(`/api/map/list/juso/gugun/${responseData}`);
+            this.gugun = response.data;
+        },
+        async findNews(){
+            const sido = document.querySelector(".sido");
+            let sidoCode = sido.options[sido.selectedIndex].value;
+            const gugun = document.querySelector(".gugun");
+            let gugunCode = gugun.options[gugun.selectedIndex].value;
+
+            if(gugunCode=="구/군" || sidoCode=="광역시"){
+                alert("지역 또는 날짜를 반드시 입력해주세요.");
+                return;
+            }
+
+            let response = await http.get(`/api/news/${sidoCode}/${gugunCode}`);
+            console.log(response);
+            this.news = response.data;
+        }
     },
     async fetch(){
-        const response = await http.get("/api/news");
-        console.log(response.data);
-        this.news = response.data;
+        if(this.$store.state.user.addressCity != "" && this.$store.state.user.addressGu != "" && this.$store.state.user.addressCity != undefined && this.$store.state.user.addressGu != undefined){
+            const response = await http.get(`/api/news/${this.$store.state.user.addressCity}/${this.$store.state.user.addressGu}`)
+            this.news = response.data;
+        }else{
+            const response = await http.get("/api/news");
+            this.news = response.data;
+        }
+
+        let response = await http.get('/api/map/list/juso');
+        this.si = response.data;
     }
 }
 </script>
@@ -119,14 +167,47 @@ export default {
 }
 
 .location-graph{
-    @include setSize(100%, 56px);
-    @include flex(flex, null, center);
+    @include setSize(1200px, 56px);
+    width: 1200px !important;
+    margin:0 auto;
+    @include flex(flex, space-between, center);
+    justify-content: space-between;
     border-bottom:1px solid #E7E7E7;
     p{
         @include block-center(1200px);
-        @include font(15px, 300
-        
-        , #CECECE);
+        @include font(15px, 300, #CECECE);
+    }
+    .separator{
+        @include flex(flex, center);
+        select{
+            @include setSize(100px, 40px);
+            background-color:#f5f5f5;
+            border:none;
+            border-radius:4px;
+            margin-left:16px;
+            box-sizing: border-box;
+            padding:10px;
+            &:focus{
+                background-color:#326CF9;
+                @include font(14px, 400, #fff);
+            }
+            option{
+                background-color:#f5f5f5;
+                @include font(14px, 400, #737373);
+            }
+        }
+        .find{
+            @include setSize(80px, 40px);
+            border:none;
+            border-radius:4px;
+            @include font(13px, 500, #000);
+            margin-left:12px;
+            cursor:pointer;
+            &:hover{
+                background-color:#326CF9;
+                @include font(14px, 400, #fff);
+            }
+        }
     }
 }
 
