@@ -118,7 +118,6 @@ export default {
             }
         },
         async removeComment(commentNo){
-            console.log(commentNo);
             let response = await http.delete(`/api/comment/delete/${commentNo}`, {
                 headers:{
                     "jwt-auth-token": this.$store.state.user.authToken,
@@ -129,22 +128,26 @@ export default {
                 this.$router.push('/notice');
             }
         },
+        async loadData(that){
+            let response = await http.get('/api/notice/detail/' + this.$route.params.no);
+            this.articleNo = response.data.detail.articleNo;
+            this.title = response.data.detail.title;
+            this.content = response.data.detail.content;
+            this.registTime = response.data.detail.registTime;
+            console.log(that);
+            console.log("store: " + that.$store);
+            let commentResponse = await http.get('/api/comment/list/'+ this.$route.params.no, {
+                headers:{
+                    "jwt-auth-token" : this.$store.state.user.authToken,
+                }
+            })
+
+            this.comments = commentResponse.data.list;
+            console.log(this.comments);
+        }
     },
-    async fetch(){
-        let response = await http.get('/api/notice/detail/' + this.$route.params.no);
-        this.articleNo = response.data.detail.articleNo;
-        this.title = response.data.detail.title;
-        this.content = response.data.detail.content;
-        this.registTime = response.data.detail.registTime;
-
-        let commentResponse = await http.get('/api/comment/list/'+this.$route.params.no, {
-            headers:{
-                "jwt-auth-token" : this.$store.state.user.authToken,
-            }
-        })
-
-        this.comments = commentResponse.data.list;
-        console.log(this.comments);
+    created() {
+        this.loadData(this);
     }
 }
 </script>

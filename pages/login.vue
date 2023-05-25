@@ -100,6 +100,10 @@ export default {
             })
         },
     },
+    fetch(){
+        console.log("this: " , this);
+        console.log("store: ", this.$store);
+    }
 }
 </script>
 
