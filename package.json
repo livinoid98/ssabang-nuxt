@@ -23,6 +23,7 @@
     "npm": "^9.6.7",
     "nuxt": "^2.0.0",
     "nuxt-d3": "^0.0.0-alpha-005",
+    "pm2": "^5.3.0",
     "vuex-persistedstate": "^4.1.0"
   },
   "devDependencies": {
